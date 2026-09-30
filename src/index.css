@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-void: #050608;
+  --bg-base: #080A0D;
+  --bg-surface: #0D1117;
+  --bg-elevated: #151B23;
+  --border-subtle: #1E2633;
+  --border-bright: #2D3748;
+  --text-primary: #F2F2EA;
+  --text-secondary: #9AA3AD;
+  --text-muted: #5C6572;
+  --accent-mint: #7CFFB2;
+  --accent-cyan: #62D9FF;
+  --accent-amber: #FFB347;
+}
+
+html {
+  background-color: #050608;
+  color: #F2F2EA;
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050608;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2633;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7CFFB2;
+}
+
+/* Subtle scanlines effect */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Subtle engineering grid background */
+.tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(124, 255, 178, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(124, 255, 178, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.tech-grid-dense {
+  background-image: 
+    linear-gradient(to right, rgba(98, 217, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(98, 217, 255, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Subtle noise texture */
+.bg-noise {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Glitch text effect classes */
+.glitch-hover:hover {
+  animation: micro-glitch 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes micro-glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); text-shadow: -1px 0 #7CFFB2, 1px 0 #62D9FF; }
+  40% { transform: translate(2px, -1px); text-shadow: 1px 0 #7CFFB2, -1px 0 #62D9FF; }
+  60% { transform: translate(-1px, -1px); text-shadow: -1px 0 #FFB347, 1px 0 #7CFFB2; }
+  80% { transform: translate(1px, 1px); }
+  100% { transform: translate(0); text-shadow: none; }
+}
+
+/* Hide default cursor on desktop when custom cursor is active */
+@media (pointer: fine) {
+  body.custom-cursor-enabled,
+  body.custom-cursor-enabled a,
+  body.custom-cursor-enabled button,
+  body.custom-cursor-enabled input,
+  body.custom-cursor-enabled textarea {
+    cursor: none !important;
+  }
+}
+
+/* Corner bracket decorative elements */
+.bracket-box {
+  position: relative;
+}
+.bracket-box::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid #7CFFB2;
+  border-left: 2px solid #7CFFB2;
+  pointer-events: none;
+}
+.bracket-box::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #7CFFB2;
+  border-right: 2px solid #7CFFB2;
+  pointer-events: none;
+}
+
+/* Terminal scrollbar */
+.terminal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: #080A0D;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: #2D3748;
+}
