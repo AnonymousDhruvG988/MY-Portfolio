@@ -3,138 +3,488 @@
 @tailwind utilities;
 
 :root {
-  --bg-void: #050608;
-  --bg-base: #080A0D;
-  --bg-surface: #0D1117;
-  --bg-elevated: #151B23;
-  --border-subtle: #1E2633;
-  --border-bright: #2D3748;
-  --text-primary: #F2F2EA;
-  --text-secondary: #9AA3AD;
-  --text-muted: #5C6572;
-  --accent-mint: #7CFFB2;
-  --accent-cyan: #62D9FF;
-  --accent-amber: #FFB347;
+  --glass-blur: blur(28px) saturate(200%);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-bright: rgba(255, 255, 255, 0.32);
+  --glass-rim: rgba(255, 255, 255, 0.45);
+  --accent-cyan: #64D2FF;
+  --accent-blue: #0A84FF;
+  --accent-mint: #63E6E2;
 }
 
 html {
-  background-color: #050608;
-  color: #F2F2EA;
   scroll-behavior: smooth;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom subtle scrollbar */
+/* Hide native OS cursor ONLY when a fine precision device (mouse, stylus, OTG mouse) is active */
+html.custom-cursor-enabled,
+html.custom-cursor-enabled *,
+html.custom-cursor-enabled *::before,
+html.custom-cursor-enabled *::after {
+  cursor: none !important;
+}
+
+/* Touch & devices without fine pointer active retain standard responsive touch behavior */
+html:not(.custom-cursor-enabled) * {
+  cursor: auto;
+}
+html:not(.custom-cursor-enabled) button,
+html:not(.custom-cursor-enabled) a,
+html:not(.custom-cursor-enabled) [role="button"] {
+  cursor: pointer;
+}
+
+/* Flagship Deep Obsidian Dark Mode */
+html.dark {
+  background-color: #030712;
+  color: #F8FAFC;
+  color-scheme: dark;
+}
+
+/* Crisp Clean Frosted Light Mode */
+html:not(.dark) {
+  background-color: #F1F5F9;
+  color: #0F172A;
+  color-scheme: light;
+}
+
+/* Modern Optical Liquid Glass Material (WWDC25 / VisionOS Style) */
+.liquid-glass,
+.glass-card {
+  background: rgba(12, 18, 34, 0.72);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45),
+    0 16px 36px -10px rgba(0, 0, 0, 0.65);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              background-color 0.35s ease;
+}
+
+.liquid-glass:hover,
+.glass-card:hover {
+  transform: translateY(-3px) scale(1.008);
+  border-color: rgba(100, 210, 255, 0.38);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.42),
+    0 24px 52px -10px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(100, 210, 255, 0.16);
+}
+
+html:not(.dark) .liquid-glass,
+html:not(.dark) .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    0 16px 36px -10px rgba(15, 23, 42, 0.08);
+  color: #0F172A;
+}
+
+html:not(.dark) .liquid-glass:hover,
+html:not(.dark) .glass-card:hover {
+  border-color: rgba(10, 132, 255, 0.35);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    0 24px 48px -10px rgba(15, 23, 42, 0.14),
+    0 0 20px rgba(10, 132, 255, 0.12);
+}
+
+.liquid-glass-elevated,
+.glass-elevated {
+  background: rgba(16, 24, 46, 0.84);
+  backdrop-filter: blur(36px) saturate(220%);
+  -webkit-backdrop-filter: blur(36px) saturate(220%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    inset 0 2px 2px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.5),
+    0 28px 60px -12px rgba(0, 0, 0, 0.85);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease;
+}
+
+html:not(.dark) .liquid-glass-elevated,
+html:not(.dark) .glass-elevated {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  box-shadow: 
+    inset 0 2px 2px 0 rgba(255, 255, 255, 1),
+    0 28px 60px -12px rgba(15, 23, 42, 0.12);
+  color: #0F172A;
+}
+
+.liquid-glass-subtle,
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+  transition: all 0.3s ease;
+}
+
+.liquid-glass-subtle:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+html:not(.dark) .liquid-glass-subtle {
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #0F172A;
+}
+
+/* Translucent Optical Capsule */
+.liquid-lens-capsule {
+  background: rgba(12, 17, 30, 0.88);
+  backdrop-filter: blur(36px) saturate(230%);
+  -webkit-backdrop-filter: blur(36px) saturate(230%);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.45),
+    0 20px 50px -10px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(100, 210, 255, 0.16);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html:not(.dark) .liquid-lens-capsule {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.98),
+    0 20px 50px -10px rgba(15, 23, 42, 0.12),
+    0 0 30px rgba(10, 132, 255, 0.12);
+  color: #0F172A;
+}
+
+/* Light mode text contrast overrides so white text does not wash out */
+html:not(.dark) .text-white {
+  color: #0F172A !important;
+}
+html:not(.dark) .text-white\/90 {
+  color: rgba(15, 23, 42, 0.9) !important;
+}
+html:not(.dark) .text-white\/85,
+html:not(.dark) .text-white\/80 {
+  color: rgba(15, 23, 42, 0.85) !important;
+}
+html:not(.dark) .text-white\/75,
+html:not(.dark) .text-white\/70 {
+  color: rgba(30, 41, 59, 0.8) !important;
+}
+html:not(.dark) .text-white\/65,
+html:not(.dark) .text-white\/60 {
+  color: rgba(51, 65, 85, 0.75) !important;
+}
+html:not(.dark) .text-white\/50 {
+  color: rgba(71, 85, 105, 0.7) !important;
+}
+html:not(.dark) .text-white\/40 {
+  color: rgba(100, 116, 139, 0.72) !important;
+}
+
+/* Light mode backgrounds & borders for dark-oriented cards */
+html:not(.dark) .bg-black {
+  background-color: #FFFFFF !important;
+}
+html:not(.dark) .bg-black\/90,
+html:not(.dark) .bg-black\/80,
+html:not(.dark) .bg-black\/70 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html:not(.dark) .border-white\/10,
+html:not(.dark) .border-white\/15,
+html:not(.dark) .border-white\/20 {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* High-Contrast Developer Console & Terminal Surface (Authentic Kali Linux / Terminal Engine) */
+.dark-console {
+  background-color: #070B16 !important;
+  color: #E2E8F0 !important;
+}
+
+.dark-console pre,
+.dark-console code {
+  color: #F1F5F9 !important;
+}
+
+.dark-console .text-slate-100,
+.dark-console .text-slate-200 {
+  color: #F8FAFC !important;
+}
+
+.dark-console .text-slate-300 {
+  color: #CBD5E1 !important;
+}
+
+.dark-console .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+.dark-console .text-slate-500 {
+  color: #64748B !important;
+}
+
+.dark-console .text-white,
+.dark-console input {
+  color: #FFFFFF !important;
+}
+
+.dark-console input::placeholder {
+  color: #64748B !important;
+}
+
+.dark-console .text-emerald-300,
+.dark-console .text-emerald-400,
+.dark-console .text-accent-mint {
+  color: #30D158 !important;
+}
+
+.dark-console .text-accent-cyan {
+  color: #64D2FF !important;
+}
+
+.dark-console .text-amber-400 {
+  color: #FFB340 !important;
+}
+
+/* Light mode specific console overrides to maintain pristine developer terminal readability */
+html:not(.dark) .dark-console {
+  background-color: #050814 !important;
+  border-color: rgba(100, 210, 255, 0.25) !important;
+  box-shadow: 0 20px 45px -10px rgba(5, 9, 20, 0.35), 0 0 25px rgba(100, 210, 255, 0.08) !important;
+}
+
+html:not(.dark) .dark-console .text-white {
+  color: #FFFFFF !important;
+}
+
+html:not(.dark) .dark-console .text-slate-200,
+html:not(.dark) .dark-console .text-slate-300 {
+  color: #CBD5E1 !important;
+}
+
+html:not(.dark) .system-boot-screen .text-white,
+html:not(.dark) .diagnostic-modal .text-white {
+  color: #FFFFFF !important;
+}
+
+html:not(.dark) .diagnostic-modal .text-white\/80 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html:not(.dark) .diagnostic-modal .text-white\/60 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+html:not(.dark) .diagnostic-modal .text-white\/40 {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+html:not(.dark) .diagnostic-modal.bg-black,
+html:not(.dark) .system-boot-screen.bg-black {
+  background-color: #030712 !important;
+}
+
+/* 3D Spin / Flip Transition */
+.spin-flip-container {
+  perspective: 600px;
+}
+
+@keyframes spinFlipIn {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) rotateX(-75deg);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translateY(-2px) rotateX(10deg);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+.spin-flip-active {
+  animation: spinFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Translucent Squircle Card with Rim Specular Highlight */
+.frosted-squircle {
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.frosted-squircle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  pointer-events: none;
+}
+
+/* Ambient Refractive Background Glows */
+.aurora-mesh {
+  background: 
+    radial-gradient(circle at 20% 15%, rgba(10, 132, 255, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 80% 25%, rgba(100, 210, 255, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 60%, rgba(99, 230, 226, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 25% 85%, rgba(191, 90, 242, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 75% 90%, rgba(48, 209, 88, 0.09) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+html:not(.dark) .aurora-mesh {
+  background: 
+    radial-gradient(circle at 20% 15%, rgba(10, 132, 255, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 80% 25%, rgba(100, 210, 255, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 50% 60%, rgba(99, 230, 226, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 90%, rgba(48, 209, 88, 0.06) 0%, transparent 45%);
+}
+
+/* Custom Sleek Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050608;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E2633;
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #7CFFB2;
+  background: rgba(100, 210, 255, 0.6);
 }
 
-/* Subtle scanlines effect */
-.scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
-  ), linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.03),
-    rgba(0, 255, 0, 0.01),
-    rgba(0, 0, 255, 0.03)
-  );
-  background-size: 100% 3px, 6px 100%;
-  pointer-events: none;
+/* Tactile Press State */
+.ios-pressable {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+.ios-pressable:active {
+  transform: scale(0.97);
+  opacity: 0.88;
 }
 
-/* Subtle engineering grid background */
-.tech-grid {
-  background-image: 
-    linear-gradient(to right, rgba(124, 255, 178, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(124, 255, 178, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+/* Glass Traffic Light Controls */
+.glass-traffic-red {
+  background: #FF453A;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 0 8px rgba(255, 69, 58, 0.4);
+}
+.glass-traffic-yellow {
+  background: #FF9F0A;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 0 8px rgba(255, 159, 10, 0.4);
+}
+.glass-traffic-green {
+  background: #30D158;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 0 8px rgba(48, 209, 88, 0.4);
 }
 
-.tech-grid-dense {
-  background-image: 
-    linear-gradient(to right, rgba(98, 217, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(98, 217, 255, 0.04) 1px, transparent 1px);
-  background-size: 16px 16px;
+/* No Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
-/* Subtle noise texture */
-.bg-noise {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
-  background-size: 24px 24px;
-}
+/* Mobile Optimizations (Section 11) */
+@media (max-width: 767px) {
+  /* Reduce blur on mobile for smooth GPU 60fps */
+  .liquid-glass,
+  .glass-card,
+  .liquid-glass-elevated,
+  .liquid-lens-capsule {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+  
+  /* Ensure touch targets are at least approximately 44px */
+  button, 
+  a,
+  .ios-pressable {
+    min-height: 44px;
+  }
 
-/* Glitch text effect classes */
-.glitch-hover:hover {
-  animation: micro-glitch 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes micro-glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 1px); text-shadow: -1px 0 #7CFFB2, 1px 0 #62D9FF; }
-  40% { transform: translate(2px, -1px); text-shadow: 1px 0 #7CFFB2, -1px 0 #62D9FF; }
-  60% { transform: translate(-1px, -1px); text-shadow: -1px 0 #FFB347, 1px 0 #7CFFB2; }
-  80% { transform: translate(1px, 1px); }
-  100% { transform: translate(0); text-shadow: none; }
-}
-
-/* Hide default cursor on desktop when custom cursor is active */
-@media (pointer: fine) {
-  body.custom-cursor-enabled,
-  body.custom-cursor-enabled a,
-  body.custom-cursor-enabled button,
-  body.custom-cursor-enabled input,
-  body.custom-cursor-enabled textarea {
-    cursor: none !important;
+  /* Reduce background particle & parallax motion on mobile */
+  .aurora-mesh {
+    opacity: 0.4 !important;
   }
 }
 
-/* Corner bracket decorative elements */
-.bracket-box {
-  position: relative;
-}
-.bracket-box::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid #7CFFB2;
-  border-left: 2px solid #7CFFB2;
-  pointer-events: none;
-}
-.bracket-box::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 8px;
-  height: 8px;
-  border-bottom: 2px solid #7CFFB2;
-  border-right: 2px solid #7CFFB2;
-  pointer-events: none;
+/* Organic Liquid Glass Bubbly Spring Curve (VisionOS / WWDC25 style) */
+.liquid-bubbly-morph {
+  transition: all 0.75s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-/* Terminal scrollbar */
-.terminal-scroll::-webkit-scrollbar {
-  width: 4px;
+/* Smooth Hardware-Accelerated Animation for Side Screen Transition */
+@keyframes sideScreenEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.97);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
 }
-.terminal-scroll::-webkit-scrollbar-track {
-  background: #080A0D;
+
+@keyframes sideScreenEnterMobile {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
-.terminal-scroll::-webkit-scrollbar-thumb {
-  background: #2D3748;
+
+.animate-side-screen {
+  animation: sideScreenEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
 }
+
+@media (max-width: 1023px) {
+  .animate-side-screen {
+    animation: sideScreenEnterMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+/* Hardware accelerated layer composition for high FPS scrolling */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+

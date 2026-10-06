@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { audioSystem } from '../utils/audioSystem';
-import { Terminal, X, ShieldAlert, Cpu, CheckCircle } from 'lucide-react';
+import { X, ShieldAlert, Cpu, CheckCircle, Terminal } from 'lucide-react';
 
 interface DiagnosticOverrideModalProps {
   isOpen: boolean;
@@ -25,18 +25,21 @@ export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = (
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-bg-void/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6 animate-fade-in diagnostic-modal"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl bg-bg-surface border-2 border-accent-crimson/60 rounded-lg shadow-[0_0_50px_rgba(255,83,112,0.25)] overflow-hidden flex flex-col bracket-box"
+        className="w-full max-w-2xl bg-[#080D1A] border border-accent-cyan/40 rounded-[36px] shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(100,210,255,0.25)] overflow-hidden flex flex-col frosted-squircle diagnostic-modal"
       >
-        {/* Header */}
-        <div className="bg-accent-crimson/15 px-6 py-4 border-b border-accent-crimson/40 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <ShieldAlert className="w-5 h-5 text-accent-crimson animate-pulse" />
-            <span className="font-mono text-xs sm:text-sm font-bold text-accent-crimson tracking-widest uppercase">
-              DIAGNOSTIC SYSTEM OVERRIDE // 0xDG988
+        {/* Modal Header */}
+        <div className="bg-[#0B1120] px-6 py-4 border-b border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="w-3 h-3 rounded-full glass-traffic-red cursor-pointer" onClick={onClose} />
+            <span className="w-3 h-3 rounded-full glass-traffic-yellow cursor-pointer" />
+            <span className="w-3 h-3 rounded-full glass-traffic-green cursor-pointer" />
+            <span className="font-sans text-xs sm:text-sm font-bold text-white ml-2 flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-accent-cyan" />
+              Diagnostic System Override
             </span>
           </div>
           <button
@@ -44,68 +47,68 @@ export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = (
               audioSystem.playClick();
               onClose();
             }}
-            className="text-text-muted hover:text-text-primary p-1 rounded"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white/70"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 sm:p-8 space-y-6 font-mono text-xs text-text-secondary bg-bg-void/95">
-          <div className="p-4 rounded bg-bg-surface/80 border border-border-subtle flex items-start gap-3">
-            <Terminal className="w-4 h-4 text-accent-mint shrink-0 mt-0.5" />
+        <div className="p-7 sm:p-8 space-y-6 font-sans text-xs text-white/80 bg-black/70">
+          <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex items-start gap-3">
+            <Terminal className="w-5 h-5 text-accent-cyan shrink-0 mt-0.5" />
             <div>
-              <div className="text-text-primary font-bold text-sm mb-1">
-                ACCESS GRANTED: DEVELOPER DEBUG KERNEL
+              <div className="text-white font-bold text-sm mb-1">
+                Developer Debug Kernel Initialized
               </div>
-              <p className="leading-relaxed text-text-muted">
-                You triggered the hidden diagnostic protocol (initials frequency burst or override keyword).
+              <p className="leading-relaxed text-white/60">
+                You unlocked the hidden diagnostic protocol (frequency burst or keyword override).
               </p>
             </div>
           </div>
 
           {/* Internal Telemetry Table */}
-          <div className="space-y-2 border-y border-border-subtle py-4">
+          <div className="space-y-2.5 border-y border-white/10 py-4 font-mono text-xs">
             <div className="flex justify-between">
-              <span className="text-text-muted">OPERATOR:</span>
-              <span className="text-text-primary font-semibold">{PORTFOLIO_DATA.name}</span>
+              <span className="text-white/40">OPERATOR:</span>
+              <span className="text-white font-semibold">{PORTFOLIO_DATA.name}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-muted">CALLSIGN:</span>
-              <span className="text-accent-mint">{PORTFOLIO_DATA.codeName}</span>
+              <span className="text-white/40">CALLSIGN:</span>
+              <span className="text-accent-cyan font-bold">{PORTFOLIO_DATA.codeName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-muted">ENVIRONMENT:</span>
-              <span className="text-accent-cyan">Kali Linux Rolling + VS Code + Python 3</span>
+              <span className="text-white/40">ECOSYSTEM:</span>
+              <span className="text-white">Translucent Core + Kali Linux Lab</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-muted">PASSION:</span>
-              <span className="text-text-primary">Wireless Frame Analysis & Resilient Systems</span>
+              <span className="text-white/40">SPECIALTY:</span>
+              <span className="text-accent-mint">Wireless Frame Telemetry & Security Probes</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-muted">SECURITY INTEGRITY:</span>
-              <span className="text-accent-mint flex items-center gap-1">
+              <span className="text-white/40">SECURITY INTEGRITY:</span>
+              <span className="text-ios-green flex items-center gap-1 font-semibold">
                 <CheckCircle className="w-3.5 h-3.5" />
-                ETHICAL RESEARCH CERTIFIED
+                Ethical Lab Certified
               </span>
             </div>
           </div>
 
           {/* Personal Developer Note */}
-          <div className="p-4 rounded bg-accent-mint/5 border border-accent-mint/20 text-text-secondary leading-relaxed">
-            <div className="text-accent-mint font-semibold mb-2 flex items-center gap-2">
+          <div className="p-5 rounded-2xl bg-accent-cyan/10 border border-accent-cyan/25 text-white/80 leading-relaxed font-sans">
+            <div className="text-accent-cyan font-bold mb-2 flex items-center gap-2">
               <Cpu className="w-4 h-4" />
-              BUILDER'S NOTE:
+              Builder's Statement:
             </div>
-            "Thanks for inspecting the interface closely. I believe software engineering is fundamentally about curiosity: wanting to know what happens behind the screen, inside the socket, and across the wire. Let's build something bold together."
+            "Thanks for inspecting the interface so closely. I believe exceptional software combines rigorous first-principles engineering with intuitive, beautiful human interaction. Let's create ambitious things together."
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-1">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-accent-crimson/20 hover:bg-accent-crimson hover:text-bg-void text-accent-crimson border border-accent-crimson/40 rounded transition-colors font-bold tracking-wider"
+              className="px-5 py-2.5 rounded-full bg-white text-black font-bold text-xs hover:bg-white/90 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.4)] ios-pressable"
             >
-              EXIT OVERRIDE [ESC]
+              Dismiss Diagnostics [ESC]
             </button>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { PORTFOLIO_DATA, type ProjectItem } from '../data/portfolioData';
 import { ProjectCaseFileModal } from './ProjectCaseFileModal';
 import { audioSystem } from '../utils/audioSystem';
 import { GithubIcon } from './BrandIcons';
-import { ArrowUpRight, Terminal, Shield, Database, Radio, Code2 } from 'lucide-react';
+import { ArrowRight, Terminal, Shield, Database, Radio, Code2, Layers } from 'lucide-react';
 
 export const ProjectsSection: React.FC = () => {
   const [selectedCaseFile, setSelectedCaseFile] = useState<ProjectItem | null>(null);
@@ -15,139 +15,141 @@ export const ProjectsSection: React.FC = () => {
     return Code2;
   };
 
+  const getProjectAccentGradient = (idx: number) => {
+    switch (idx % 4) {
+      case 0:
+        return 'from-accent-cyan via-accent-blue to-accent-mint';
+      case 1:
+        return 'from-accent-amber via-orange-500 to-amber-300';
+      case 2:
+        return 'from-accent-mint via-teal-400 to-accent-cyan';
+      default:
+        return 'from-purple-500 via-indigo-500 to-accent-blue';
+    }
+  };
+
   return (
-    <section id="work" className="relative py-24 bg-bg-void border-t border-border-subtle">
-      {/* Decorative Grid */}
-      <div className="absolute inset-0 tech-grid opacity-25 pointer-events-none" />
+    <section id="work" className="relative py-28 overflow-hidden">
+      {/* Background Refractive Glow */}
+      <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-accent-blue/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-border-subtle pb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-6 border-b border-slate-200 dark:border-white/10">
           <div>
-            <div className="font-mono text-xs text-accent-mint tracking-widest uppercase mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent-mint animate-pulse" />
-              SYSTEM PORTFOLIO // 03
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 mb-3 border border-slate-300/80 dark:border-white/10">
+              <Layers className="w-3.5 h-3.5 text-accent-blue dark:text-accent-cyan" />
+              <span className="font-sans text-xs font-semibold text-slate-700 dark:text-white/80">
+                Spatial Projects & Experiences
+              </span>
             </div>
-            <h2 className="font-display font-black text-4xl sm:text-6xl text-text-primary tracking-tight">
-              SELECTED WORK
+            <h2 className="font-display font-extrabold text-4xl sm:text-6xl text-slate-900 dark:text-white tracking-tight">
+              Selected Work
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-xl">
-              Systems, security utilities, and database tools engineered to understand architecture from the protocol level up.
+            <p className="mt-2 text-base text-slate-600 dark:text-white/70 max-w-xl font-sans">
+              Practical software systems, offensive security audits, and database engines engineered from the protocol level up.
             </p>
           </div>
 
-          <div className="font-mono text-xs text-text-muted flex items-center gap-4">
+          <div className="font-sans text-xs text-slate-500 dark:text-white/50 flex items-center gap-3">
             <span>INDEX: 01 — 04</span>
-            <span className="hidden sm:inline">|</span>
-            <span className="text-accent-mint">CLICK TO INSPECT TECHNICAL CASE FILE</span>
+            <span className="text-slate-300 dark:text-white/20">•</span>
+            <span className="text-accent-blue dark:text-accent-cyan font-semibold">TAP CARD TO INSPECT EXPERIENCE</span>
           </div>
         </div>
 
-        {/* Editorial Project Compositions List */}
-        <div className="space-y-12">
-          {PORTFOLIO_DATA.projects.map((proj) => {
+        {/* Squircle Experience Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+          {PORTFOLIO_DATA.projects.map((proj, idx) => {
             const Icon = getProjectIcon(proj.category);
+            const gradient = getProjectAccentGradient(idx);
+
             return (
               <div
                 key={proj.id}
-                data-cursor="project"
                 onClick={() => {
                   audioSystem.playClick();
                   setSelectedCaseFile(proj);
                 }}
                 onMouseEnter={() => audioSystem.playHover()}
-                className="group relative p-6 sm:p-10 rounded-lg border border-border-subtle hover:border-border-bright bg-bg-surface/40 hover:bg-bg-surface/80 transition-all duration-300 cursor-pointer overflow-hidden bracket-box"
+                className="group relative p-7 sm:p-8 rounded-[36px] liquid-glass hover:liquid-glass-elevated border border-slate-200 dark:border-white/15 hover:border-accent-cyan/50 hover:-translate-y-2 hover:shadow-[0_24px_50px_rgba(0,0,0,0.12),0_0_30px_rgba(100,210,255,0.15)] dark:hover:shadow-[0_24px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(100,210,255,0.2)] transition-all duration-300 cursor-pointer overflow-hidden frosted-squircle flex flex-col justify-between ios-pressable"
               >
-                {/* Thin scan line that passes through on hover */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent-mint/5 to-transparent -translate-y-full group-hover:translate-y-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+                {/* Top Subtle Specular Line */}
+                <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-slate-400/30 dark:via-white/40 to-transparent pointer-events-none" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
-                  {/* Left Column: Number & Category (3 cols) */}
-                  <div className="lg:col-span-3 flex flex-col justify-between">
-                    <div>
-                      <span className="font-mono text-4xl sm:text-5xl font-black text-text-muted/40 group-hover:text-accent-mint transition-colors duration-300">
-                        {proj.number}
-                      </span>
-                      <div className="mt-2 font-mono text-[11px] text-accent-cyan tracking-wider uppercase flex items-center gap-1.5">
-                        <Icon className="w-3.5 h-3.5 text-accent-cyan" />
-                        {proj.category}
+                <div>
+                  {/* Top Bar: Icon + Pill */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${gradient} p-[1.5px] shadow-[0_0_20px_rgba(100,210,255,0.25)] group-hover:scale-105 transition-transform duration-300`}>
+                        <div className="w-full h-full rounded-[14px] bg-slate-900 dark:bg-black/90 flex items-center justify-center text-white">
+                          <Icon className="w-6 h-6" />
+                        </div>
                       </div>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-border-subtle/50 font-mono text-xs text-text-muted space-y-1 hidden lg:block">
-                      <div>ROLE: {proj.role}</div>
                       <div>
-                        STATUS:{' '}
-                        <span className="text-accent-mint font-semibold">{proj.status}</span>
+                        <div className="font-mono text-xs text-accent-blue dark:text-accent-cyan font-bold">
+                          // 0{idx + 1}
+                        </div>
+                        <div className="text-[11px] font-sans text-slate-500 dark:text-white/50 uppercase font-medium">
+                          {proj.category}
+                        </div>
                       </div>
                     </div>
+
+                    <span className="font-sans text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white/90 border border-slate-200 dark:border-white/15">
+                      {proj.status}
+                    </span>
                   </div>
 
-                  {/* Middle Column: Title & Description (6 cols) */}
-                  <div className="lg:col-span-6 flex flex-col justify-center">
-                    <h3 className="font-display font-black text-2xl sm:text-3xl text-text-primary group-hover:text-accent-mint transition-colors duration-200 mb-3 tracking-tight">
-                      {proj.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 font-normal">
-                      {proj.description}
-                    </p>
+                  {/* Project Title & Tagline */}
+                  <h3 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white group-hover:text-accent-blue dark:group-hover:text-accent-cyan transition-colors duration-200 mb-3 tracking-tight">
+                    {proj.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-white/70 leading-relaxed mb-6 font-sans">
+                    {proj.description}
+                  </p>
 
-                    {/* Tech Badges */}
-                    <div className="flex flex-wrap gap-2">
-                      {proj.technologies.map((t) => (
-                        <span
-                          key={t}
-                          className="font-mono text-[11px] px-2.5 py-1 bg-bg-elevated border border-border-subtle text-text-secondary group-hover:border-border-bright rounded"
-                        >
-                          {t}
-                        </span>
-                      ))}
+                  {/* Tech Badges */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {proj.technologies.map((t) => (
+                      <span
+                        key={t}
+                        className="font-mono text-[11px] px-3 py-1 bg-slate-100 dark:bg-white/[0.05] border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-white/80 group-hover:border-slate-300 dark:group-hover:border-white/20 rounded-full hover:scale-105 transition-all duration-200"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Terminal preview if present */}
+                  {proj.terminalCommand && (
+                    <div className="mb-6 font-mono text-xs text-emerald-300 dark:text-emerald-400 bg-slate-900 dark:bg-black/70 px-3.5 py-2.5 rounded-xl border border-slate-800 dark:border-white/10 flex items-center gap-2 shadow-sm">
+                      <Terminal className="w-3.5 h-3.5 text-accent-cyan dark:text-accent-mint shrink-0" />
+                      <span className="truncate">$ {proj.terminalCommand}</span>
                     </div>
+                  )}
+                </div>
 
-                    {/* CLI invocation preview if present */}
-                    {proj.terminalCommand && (
-                      <div className="mt-4 font-mono text-xs text-text-muted/80 bg-bg-void/80 px-3 py-1.5 rounded border border-border-subtle/50 flex items-center gap-2">
-                        <Terminal className="w-3 h-3 text-accent-mint shrink-0" />
-                        <span className="truncate">$ {proj.terminalCommand}</span>
-                      </div>
+                {/* Bottom Action Footer */}
+                <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {proj.githubUrl && (
+                      <a
+                        href={proj.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 hover:text-slate-950 dark:text-white/70 dark:hover:text-white transition-colors"
+                        title="GitHub Repo"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                      </a>
                     )}
                   </div>
 
-                  {/* Right Column: Actions & Quick Telemetry (3 cols) */}
-                  <div className="lg:col-span-3 flex flex-col justify-between items-start lg:items-end h-full">
-                    {/* Metrics preview */}
-                    <div className="space-y-2 w-full lg:text-right mb-6">
-                      {proj.metrics?.map((m) => (
-                        <div key={m.label} className="font-mono text-[10px] text-text-muted">
-                          <span className="opacity-60">{m.label}: </span>
-                          <span className="text-text-primary font-medium">{m.value}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Inspect Button */}
-                    <div className="flex items-center gap-3">
-                      {proj.githubUrl && (
-                        <a
-                          href={proj.githubUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="p-2.5 rounded border border-border-subtle hover:border-accent-mint text-text-muted hover:text-accent-mint bg-bg-surface transition-colors"
-                          title="Open GitHub Repository"
-                        >
-                          <GithubIcon className="w-4 h-4" />
-                        </a>
-                      )}
-
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-2 px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-text-primary bg-bg-surface group-hover:bg-accent-mint group-hover:text-bg-void border border-border-bright group-hover:border-accent-mint rounded transition-all duration-200"
-                      >
-                        <span>INSPECT CASE FILE</span>
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </button>
-                    </div>
+                  <div className="flex items-center gap-1.5 font-sans text-xs font-semibold text-slate-800 dark:text-white group-hover:text-accent-blue dark:group-hover:text-accent-cyan transition-colors">
+                    <span>Inspect Case File</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </div>
@@ -156,7 +158,7 @@ export const ProjectsSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Technical Case File Inspection Modal */}
+      {/* Case File Inspection Modal */}
       <ProjectCaseFileModal
         project={selectedCaseFile}
         onClose={() => setSelectedCaseFile(null)}

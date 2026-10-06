@@ -13,19 +13,23 @@ export const OffensiveSecurityLab: React.FC = () => {
   const [selectedTool, setSelectedTool] = useState<SecurityTool>(PORTFOLIO_DATA.securitySection.tools[0]);
   const [inputVal, setInputVal] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalLogsContainerRef = useRef<HTMLDivElement>(null);
+  const hasUserRunCommandRef = useRef(false);
 
   const initialLogs: TerminalLog[] = [
-    { id: '1', type: 'info', text: 'Kali GNU/Linux Rolling 2026.1 - Lab Shell Initialized.' },
-    { id: '2', type: 'info', text: 'Kernel: Linux 6.8.0-kali1-amd64 #1 SMP PREEMPT' },
-    { id: '3', type: 'alert', text: '[!] NOTICE: Authorized local lab environment. Educational & defensive security research only.' },
-    { id: '4', type: 'info', text: 'Type a command or select a vector below. Available: airmon, airodump, aircrack, hashcat, john, recon, help, clear' },
+    { id: '1', type: 'info', text: 'Terminal.app [Kali Linux Subsystem v2026.1]' },
+    { id: '2', type: 'info', text: 'Kernel: Linux 6.8.0-kali1-amd64 #1 SMP PREEMPT (x86_64)' },
+    { id: '3', type: 'alert', text: '[!] Authorized Local Lab Sandbox. Educational research and defensive security auditing.' },
+    { id: '4', type: 'info', text: 'Ready. Choose a tool below or enter command: airmon, airodump, aircrack, hashcat, john, recon, help, clear' },
   ];
 
   const [logs, setLogs] = useState<TerminalLog[]>(initialLogs);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Only scroll the internal terminal container, never the window
+    if (hasUserRunCommandRef.current && terminalLogsContainerRef.current) {
+      terminalLogsContainerRef.current.scrollTop = terminalLogsContainerRef.current.scrollHeight;
+    }
   }, [logs]);
 
   const runCommand = (cmdStr: string) => {
@@ -33,10 +37,11 @@ export const OffensiveSecurityLab: React.FC = () => {
     if (!trimmed) return;
 
     audioSystem.playTerminalKey();
+    hasUserRunCommandRef.current = true;
 
     const newLogs: TerminalLog[] = [
       ...logs,
-      { id: Date.now().toString(), type: 'command', text: `dhruv@kali:~/lab# ${trimmed}` },
+      { id: Date.now().toString(), type: 'command', text: `dhruv@kali:~/lab$ ${trimmed}` },
     ];
 
     setLogs(newLogs);
@@ -73,7 +78,7 @@ export const OffensiveSecurityLab: React.FC = () => {
         ];
       } else if (lower.includes('airodump-ng')) {
         output = [
-          { id: Math.random().toString(), type: 'info', text: 'CH  6 ][ Elapsed: 00:00:14 ][ 2026-09-30 23:42' },
+          { id: Math.random().toString(), type: 'info', text: 'CH  6 ][ Elapsed: 00:00:14 ][ 2026-10-01 00:54' },
           { id: Math.random().toString(), type: 'output', text: 'BSSID              PWR  Beacons  #Data  #/s  CH   MB   ENC  CIPHER  AUTH  ESSID' },
           { id: Math.random().toString(), type: 'output', text: '00:14:6C:7E:40:80  -42       48    312   12   6  130   WPA2 CCMP    PSK   LAB_TEST_NET' },
           { id: Math.random().toString(), type: 'alert', text: '[*] WPA Handshake: 00:14:6C:7E:40:80 detected! EAPOL frames (1/4, 2/4, 3/4, 4/4) verified.' },
@@ -93,10 +98,10 @@ export const OffensiveSecurityLab: React.FC = () => {
       } else if (lower.includes('hashcat')) {
         output = [
           { id: Math.random().toString(), type: 'info', text: 'hashcat (v6.2.6) starting in autodetect mode...' },
-          { id: Math.random().toString(), type: 'output', text: 'OpenCL Platform #1: NVIDIA Corporation / CUDA 12.4' },
-          { id: Math.random().toString(), type: 'output', text: 'Device #1: RTX Mobile Compute Core, 16384 MB allocatable' },
+          { id: Math.random().toString(), type: 'output', text: 'OpenCL Platform #1: Neural Compute Engine / CUDA Core Emulation' },
+          { id: Math.random().toString(), type: 'output', text: 'Device #1: Neural & GPU Core, 16384 MB allocatable' },
           { id: Math.random().toString(), type: 'output', text: 'Hashes: 1 digests; 1 unique digests (WPA-PBKDF2-PMKID+EAPOL)' },
-          { id: Math.random().toString(), type: 'output', text: 'Speed.#1.........:   782.4 kH/s (85.22ms) @ Accel:64 Loops:1024' },
+          { id: Math.random().toString(), type: 'output', text: 'Speed.#1.........:   892.4 kH/s (85.22ms) @ Accel:64 Loops:1024' },
           { id: Math.random().toString(), type: 'success', text: '[+] Status...........: Running (Benchmark / Entropy Audit Mode)' },
           { id: Math.random().toString(), type: 'info', text: 'Session finished. Cryptographic verification completed.' },
         ];
@@ -143,46 +148,49 @@ export const OffensiveSecurityLab: React.FC = () => {
   };
 
   return (
-    <section id="offensive-lab" className="relative py-24 bg-bg-base border-t border-border-subtle overflow-hidden">
-      {/* Background Grid & Scanlines */}
-      <div className="absolute inset-0 tech-grid-dense opacity-20 pointer-events-none" />
-      <div className="absolute inset-0 scanlines opacity-20 pointer-events-none" />
+    <section id="offensive-lab" className="relative py-28 overflow-hidden">
+      {/* Background Soft Refractive Glows */}
+      <div className="absolute top-1/2 left-10 w-96 h-96 bg-accent-crimson/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-blue/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-border-subtle pb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-6 border-b border-slate-200 dark:border-white/10">
           <div>
-            <div className="font-mono text-xs text-accent-crimson tracking-widest uppercase mb-2 flex items-center gap-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 dark:bg-accent-crimson/10 mb-3 border border-rose-300/60 dark:border-white/10">
               <Shield className="w-3.5 h-3.5 text-accent-crimson" />
-              OFFENSIVE SECURITY & ETHICAL AUDITING LAB // 02
+              <span className="font-sans text-xs font-semibold text-rose-700 dark:text-accent-crimson">
+                Offensive Security & Wireless Auditing Hub
+              </span>
             </div>
-            <h2 className="font-display font-black text-3xl sm:text-5xl text-text-primary tracking-tight">
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight">
               {PORTFOLIO_DATA.securitySection.headline}
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-2xl">
+            <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-white/70 max-w-2xl font-sans">
               {PORTFOLIO_DATA.securitySection.subtext}
             </p>
           </div>
 
-          {/* Legal / Ethical Lab Badge */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-accent-crimson/10 border border-accent-crimson/30 rounded text-accent-crimson font-mono text-xs max-w-md">
-            <AlertTriangle className="w-4 h-4 shrink-0" />
-            <span className="text-[11px] leading-tight">
+          {/* Legal / Ethical Lab Frosted Pill Badge */}
+          <div className="liquid-glass p-3.5 rounded-2xl flex items-center gap-3 border border-slate-200 dark:border-white/15 max-w-md">
+            <div className="w-8 h-8 rounded-xl bg-accent-crimson/15 flex items-center justify-center shrink-0 text-accent-crimson">
+              <AlertTriangle className="w-4 h-4" />
+            </div>
+            <span className="text-[11px] font-sans text-slate-700 dark:text-white/70 leading-snug">
               {PORTFOLIO_DATA.securitySection.disclaimer}
             </span>
           </div>
         </div>
 
-        {/* Main 2-Column Interface: Left Tool Explorer, Right Interactive Terminal */}
+        {/* 2-Column Interface: Left Tool Explorer, Right Interactive Terminal */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Security Tools Navigation & Detail (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="font-mono text-xs text-text-muted uppercase tracking-wider flex items-center justify-between">
-              <span>TOOLCHAIN SPECIFICATION</span>
-              <span>5 AUDIT VECTORS</span>
+          {/* Left Column: Security Tool Suite Tiles (5 Cols) */}
+          <div className="lg:col-span-5 flex flex-col gap-3.5">
+            <div className="font-sans text-xs font-semibold text-slate-500 dark:text-white/50 uppercase tracking-wider px-1">
+              Active Security Tool Suite (5 Vectors)
             </div>
 
-            {/* Tool Selection Tabs */}
+            {/* Squircle Tool Tiles */}
             <div className="grid grid-cols-1 gap-2.5">
               {PORTFOLIO_DATA.securitySection.tools.map((tool) => {
                 const isSelected = selectedTool.id === tool.id;
@@ -193,258 +201,256 @@ export const OffensiveSecurityLab: React.FC = () => {
                       setSelectedTool(tool);
                       audioSystem.playHover();
                     }}
-                    className={`text-left p-4 rounded border transition-all duration-200 relative overflow-hidden group ${
+                    className={`text-left p-4 rounded-[22px] transition-all duration-300 relative overflow-hidden group ios-pressable hover:-translate-y-1 hover:shadow-xl ${
                       isSelected
-                        ? 'bg-bg-surface border-accent-mint shadow-[0_0_15px_rgba(124,255,178,0.15)]'
-                        : 'bg-bg-surface/50 border-border-subtle hover:border-border-bright hover:bg-bg-surface'
+                        ? 'liquid-glass-elevated border-accent-blue/50 dark:border-accent-cyan/60 shadow-[0_10px_30px_rgba(100,210,255,0.18)]'
+                        : 'liquid-glass hover:bg-slate-50 dark:hover:bg-white/[0.08] hover:border-slate-300 dark:hover:border-white/30 border-slate-200 dark:border-white/10'
                     }`}
                   >
-                    {/* Active Accent Indicator */}
-                    {isSelected && (
-                      <div className="absolute top-0 bottom-0 left-0 w-1 bg-accent-mint" />
-                    )}
-
-                    <div className="flex items-center justify-between mb-1.5 pl-2">
-                      <div className="flex items-center gap-2">
-                        {tool.category === 'WIRELESS AUDITING' ? (
-                          <Wifi className={`w-4 h-4 ${isSelected ? 'text-accent-mint' : 'text-text-muted'}`} />
-                        ) : tool.category === 'CRYPTANALYSIS' ? (
-                          <Lock className={`w-4 h-4 ${isSelected ? 'text-accent-mint' : 'text-text-muted'}`} />
-                        ) : (
-                          <Cpu className={`w-4 h-4 ${isSelected ? 'text-accent-mint' : 'text-text-muted'}`} />
-                        )}
-                        <span className={`font-display font-bold text-base ${isSelected ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`}>
-                          {tool.name}
-                        </span>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-colors ${
+                          isSelected
+                            ? 'bg-gradient-to-tr from-accent-cyan to-accent-blue text-white shadow-[0_0_12px_rgba(100,210,255,0.4)]'
+                            : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white/70 group-hover:text-slate-900 dark:group-hover:text-white'
+                        }`}>
+                          {tool.category === 'WIRELESS AUDITING' ? (
+                            <Wifi className="w-4 h-4" />
+                          ) : tool.category === 'CRYPTANALYSIS' ? (
+                            <Lock className="w-4 h-4" />
+                          ) : (
+                            <Cpu className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div>
+                          <div className="font-sans font-bold text-sm text-slate-900 dark:text-white">
+                            {tool.name}
+                          </div>
+                          <div className="text-[11px] font-sans text-slate-500 dark:text-white/50">
+                            {tool.masteryStatus}
+                          </div>
+                        </div>
                       </div>
-                      <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-bg-elevated border border-border-subtle text-accent-cyan">
+
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-accent-blue dark:text-accent-cyan border border-slate-200 dark:border-white/10">
                         {tool.category}
                       </span>
                     </div>
 
-                    <p className="text-xs text-text-muted line-clamp-2 pl-2 mb-2 font-normal">
+                    <p className="text-xs text-slate-600 dark:text-white/70 line-clamp-2 pl-1 mb-2 font-sans">
                       {tool.roleDescription}
                     </p>
-
-                    <div className="flex items-center justify-between pl-2 pt-2 border-t border-border-subtle/50 font-mono text-[10px]">
-                      <span className="text-accent-mint/90">{tool.masteryStatus}</span>
-                      <span className="text-text-muted group-hover:text-accent-mint transition-colors">
-                        INSPECT VECTOR →
-                      </span>
-                    </div>
                   </button>
                 );
               })}
             </div>
 
-            {/* Selected Tool Deep Dive Panel */}
-            <div className="p-5 rounded border border-border-bright bg-bg-surface/90 bracket-box mt-2">
-              <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                <span className="font-mono text-xs text-accent-mint font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  VECTOR: {selectedTool.name}
+            {/* Selected Tool Detail Card */}
+            <div className="liquid-glass p-5 rounded-[26px] border border-slate-200 dark:border-white/15 frosted-squircle mt-1">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-white/10 pb-2">
+                <span className="font-sans text-xs font-bold text-accent-blue dark:text-accent-cyan flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-500 dark:text-accent-mint" />
+                  Active Spec: {selectedTool.name}
                 </span>
-                <span className="font-mono text-[10px] text-text-muted">KALI_SUITE_v2026</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-white/40">KALI_LAB</span>
               </div>
 
-              <div className="text-xs text-text-secondary leading-relaxed mb-4">
+              <p className="text-xs text-slate-700 dark:text-white/80 font-sans leading-relaxed mb-3">
                 {selectedTool.explanation}
-              </div>
+              </p>
 
-              {/* Sample Command Box */}
-              <div className="font-mono text-xs bg-bg-void p-3 rounded border border-border-subtle text-accent-mint mb-4 relative overflow-x-auto">
-                <span className="text-text-muted mr-2">$</span>
+              {/* Monospace Code Pill */}
+              <div className="font-mono text-xs bg-[#0B1120] p-3 rounded-xl border border-slate-800 text-emerald-300 dark:text-accent-mint mb-3 overflow-x-auto dark-console">
+                <span className="text-slate-500 dark:text-white/40 mr-2">$</span>
                 {selectedTool.syntaxExample}
               </div>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {selectedTool.tags.map((tag) => (
-                  <span key={tag} className="font-mono text-[10px] px-2 py-0.5 rounded bg-bg-elevated text-text-secondary border border-border-subtle">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Action Button: Load into terminal */}
+              {/* Action Button: Execute in terminal */}
               <button
                 onClick={() => handleQuickCommand(selectedTool.syntaxExample)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-bg-void bg-accent-mint hover:bg-accent-mint/90 rounded transition-all shadow-[0_0_12px_rgba(124,255,178,0.25)]"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-accent-cyan to-accent-blue hover:from-accent-cyan/90 hover:to-accent-blue/90 text-white font-sans text-xs font-bold transition-all shadow-[0_0_20px_rgba(100,210,255,0.3)] ios-pressable"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
-                EXECUTE IN LIVE KALI TERMINAL
+                <span>Execute In Terminal</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Live Interactive Kali Terminal Simulator (7 Cols) */}
-          <div className="lg:col-span-7 flex flex-col gap-4">
-            <div className="font-mono text-xs text-text-muted uppercase tracking-wider flex items-center justify-between">
+          {/* Right Column: Security Terminal (7 Cols) */}
+          <div className="lg:col-span-7 flex flex-col gap-3.5">
+            <div className="font-sans text-xs font-semibold text-slate-500 dark:text-white/50 uppercase tracking-wider px-1 flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Terminal className="w-3.5 h-3.5 text-accent-mint" />
-                INTERACTIVE KALI LINUX SHELL
+                <Terminal className="w-3.5 h-3.5 text-accent-blue dark:text-accent-cyan" />
+                Terminal // Kali Linux Sandbox
               </span>
-              <span className="text-accent-mint text-[10px] flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-mint animate-pulse" />
-                READY FOR INPUT
+              <span className="text-emerald-500 dark:text-emerald-400 text-xs font-sans flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+                Active Shell
               </span>
             </div>
 
-            {/* Terminal Window Frame */}
-            <div className="rounded border border-border-bright bg-bg-void shadow-2xl overflow-hidden flex flex-col h-[580px]">
-              {/* Terminal Title Bar */}
-              <div className="bg-bg-elevated/90 px-4 py-2.5 border-b border-border-subtle flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-accent-crimson/80" />
-                  <div className="w-3 h-3 rounded-full bg-accent-amber/80" />
-                  <div className="w-3 h-3 rounded-full bg-accent-mint/80" />
-                  <span className="font-mono text-xs text-text-secondary ml-2 font-medium">
-                    dhruv@kali: ~/lab (zsh)
+            {/* Terminal Window Frame - Authentic High Contrast Kali Linux Developer Console */}
+            <div className="rounded-[32px] bg-[#070C18] border border-cyan-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.7),0_0_35px_rgba(100,210,255,0.14)] overflow-hidden flex flex-col h-[520px] sm:h-[590px] frosted-squircle dark-console ring-1 ring-white/10 gpu-layer">
+              {/* Traffic Light Header Bar */}
+              <div className="bg-[#0E1528] px-5 py-3.5 border-b border-cyan-500/20 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-3 h-3 rounded-full glass-traffic-red cursor-pointer" />
+                  <div className="w-3 h-3 rounded-full glass-traffic-yellow cursor-pointer" />
+                  <div className="w-3 h-3 rounded-full glass-traffic-green cursor-pointer" />
+                  <span className="font-mono text-xs text-slate-100 ml-3 font-medium flex items-center gap-2">
+                    <span className="text-accent-cyan font-bold">dhruv@kali:</span>
+                    <span className="text-slate-300">~/lab (zsh)</span>
                   </span>
                 </div>
-                <button
-                  onClick={() => setLogs(initialLogs)}
-                  title="Reset Terminal"
-                  className="font-mono text-[11px] text-text-muted hover:text-text-primary flex items-center gap-1 transition-colors"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  RESET
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hidden sm:inline">
+                    SANDBOX ACTIVE
+                  </span>
+                  <button
+                    onClick={() => setLogs(initialLogs)}
+                    title="Reset Terminal"
+                    className="font-sans text-xs text-slate-300 hover:text-white flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/15 transition-colors border border-white/10"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Reset</span>
+                  </button>
+                </div>
               </div>
 
-              {/* Terminal Quick Command Chips */}
-              <div className="bg-bg-surface/80 px-3 py-2 border-b border-border-subtle/80 flex items-center gap-1.5 overflow-x-auto text-[11px] font-mono scrollbar-none">
-                <span className="text-text-muted shrink-0 text-[10px]">QUICK VECTORS:</span>
+              {/* Quick Vector Action Pills */}
+              <div className="bg-[#0A1020] px-4 py-2.5 border-b border-cyan-500/15 flex items-center gap-1.5 overflow-x-auto text-[11px] font-sans no-scrollbar">
+                <span className="text-slate-400 shrink-0 text-[10px] mr-1 font-mono uppercase">QUICK ACTIONS:</span>
                 <button
                   onClick={() => handleQuickCommand('airmon-ng start wlan0')}
-                  className="px-2 py-0.5 rounded bg-bg-void hover:bg-accent-mint/10 border border-border-subtle hover:border-accent-mint/40 text-text-secondary hover:text-accent-mint shrink-0 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-[#131C33] hover:bg-[#1E2B4E] text-slate-100 hover:text-white border border-slate-700/80 hover:border-cyan-400/50 shrink-0 transition-all font-mono"
                 >
                   airmon-ng
                 </button>
                 <button
                   onClick={() => handleQuickCommand('airodump-ng -c 6 wlan0mon')}
-                  className="px-2 py-0.5 rounded bg-bg-void hover:bg-accent-mint/10 border border-border-subtle hover:border-accent-mint/40 text-text-secondary hover:text-accent-mint shrink-0 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-[#131C33] hover:bg-[#1E2B4E] text-slate-100 hover:text-white border border-slate-700/80 hover:border-cyan-400/50 shrink-0 transition-all font-mono"
                 >
                   airodump-ng
                 </button>
                 <button
                   onClick={() => handleQuickCommand('hashcat -m 22000 handshake.hc22000')}
-                  className="px-2 py-0.5 rounded bg-bg-void hover:bg-accent-mint/10 border border-border-subtle hover:border-accent-mint/40 text-text-secondary hover:text-accent-mint shrink-0 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-[#131C33] hover:bg-[#1E2B4E] text-slate-100 hover:text-white border border-slate-700/80 hover:border-cyan-400/50 shrink-0 transition-all font-mono"
                 >
                   hashcat
                 </button>
                 <button
                   onClick={() => handleQuickCommand('john --format=sha512crypt hashes.txt')}
-                  className="px-2 py-0.5 rounded bg-bg-void hover:bg-accent-mint/10 border border-border-subtle hover:border-accent-mint/40 text-text-secondary hover:text-accent-mint shrink-0 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-[#131C33] hover:bg-[#1E2B4E] text-slate-100 hover:text-white border border-slate-700/80 hover:border-cyan-400/50 shrink-0 transition-all font-mono"
                 >
                   john
                 </button>
                 <button
                   onClick={() => handleQuickCommand('python3 pyrecon.py')}
-                  className="px-2 py-0.5 rounded bg-bg-void hover:bg-accent-mint/10 border border-border-subtle hover:border-accent-mint/40 text-text-secondary hover:text-accent-mint shrink-0 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-[#131C33] hover:bg-[#1E2B4E] text-slate-100 hover:text-white border border-slate-700/80 hover:border-cyan-400/50 shrink-0 transition-all font-mono"
                 >
                   python probe
                 </button>
                 <button
                   onClick={() => handleQuickCommand('cat secret.txt')}
-                  className="px-2 py-0.5 rounded bg-accent-crimson/15 border border-accent-crimson/30 text-accent-crimson shrink-0"
+                  className="px-2.5 py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 shrink-0 hover:bg-rose-500/30 transition-colors font-mono"
                 >
                   cat secret.txt
                 </button>
               </div>
 
               {/* Terminal Logs Output Stream */}
-              <div className="flex-1 p-4 font-mono text-xs overflow-y-auto space-y-2 terminal-scroll bg-bg-void/95">
+              <div ref={terminalLogsContainerRef} className="flex-1 p-5 font-mono text-xs overflow-y-auto space-y-2 bg-[#070B16] text-slate-100">
                 {logs.map((log) => {
                   if (log.type === 'command') {
                     return (
-                      <div key={log.id} className="text-text-primary font-semibold flex items-start gap-1">
-                        <span className="text-accent-mint shrink-0">&gt;</span>
-                        <span className="break-all">{log.text}</span>
+                      <div key={log.id} className="text-white font-semibold flex items-start gap-1.5 bg-white/[0.04] p-1.5 rounded-lg border-l-2 border-accent-cyan">
+                        <span className="text-accent-cyan font-bold shrink-0">&gt;</span>
+                        <span className="break-all text-white font-mono">{log.text}</span>
                       </div>
                     );
                   }
                   if (log.type === 'success') {
                     return (
-                      <div key={log.id} className="text-accent-mint flex items-start gap-1 pl-2">
+                      <div key={log.id} className="text-emerald-400 flex items-start gap-1 pl-2 font-mono">
+                        <span className="text-emerald-300 font-bold">[+]</span>
                         <span>{log.text}</span>
                       </div>
                     );
                   }
                   if (log.type === 'alert') {
                     return (
-                      <div key={log.id} className="text-accent-amber flex items-start gap-1 pl-2">
+                      <div key={log.id} className="text-amber-300 flex items-start gap-1 pl-2 font-mono">
+                        <span className="text-amber-400 font-bold">[!]</span>
                         <span>{log.text}</span>
                       </div>
                     );
                   }
                   if (log.type === 'info') {
                     return (
-                      <div key={log.id} className="text-accent-cyan flex items-start gap-1 pl-2">
+                      <div key={log.id} className="text-accent-cyan flex items-start gap-1 pl-2 font-mono">
+                        <span className="text-accent-cyan font-bold">[*]</span>
                         <span>{log.text}</span>
                       </div>
                     );
                   }
                   return (
-                    <div key={log.id} className="text-text-secondary pl-2 whitespace-pre-wrap leading-relaxed">
+                    <div key={log.id} className="text-slate-200 pl-3 whitespace-pre-wrap leading-relaxed font-mono">
                       {log.text}
                     </div>
                   );
                 })}
 
                 {isExecuting && (
-                  <div className="text-accent-mint flex items-center gap-2 pl-2">
-                    <span className="w-2 h-2 rounded-full bg-accent-mint animate-ping" />
-                    <span>Executing subprocess kernel routines...</span>
+                  <div className="text-accent-cyan flex items-center gap-2 pl-2">
+                    <span className="w-2 h-2 rounded-full bg-accent-cyan animate-ping" />
+                    <span className="font-mono text-accent-cyan">Executing kernel routine...</span>
                   </div>
                 )}
-
-                <div ref={terminalEndRef} />
               </div>
 
-              {/* Terminal Active Input Row */}
+              {/* Terminal Input Bar */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   runCommand(inputVal);
                   setInputVal('');
                 }}
-                className="bg-bg-surface border-t border-border-subtle p-3 flex items-center gap-2"
+                className="bg-[#0B1224] border-t border-cyan-500/20 p-3 sm:p-3.5 flex items-center gap-2"
               >
-                <span className="font-mono text-xs text-accent-mint font-bold shrink-0">
-                  dhruv@kali:~/lab#
+                <span className="font-mono text-xs text-accent-cyan font-bold shrink-0">
+                  dhruv@kali:~/lab$&nbsp;
                 </span>
                 <input
                   type="text"
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
                   placeholder="Type command ('help', 'airmon-ng', 'hashcat')..."
-                  className="flex-1 bg-transparent text-text-primary font-mono text-xs focus:outline-none placeholder:text-text-muted"
+                  className="flex-1 bg-transparent text-white font-mono text-xs focus:outline-none placeholder:text-slate-400 caret-cyan-400"
                 />
                 <button
                   type="submit"
                   disabled={isExecuting}
-                  className="font-mono text-[11px] px-3 py-1 bg-accent-mint/15 text-accent-mint border border-accent-mint/30 rounded hover:bg-accent-mint hover:text-bg-void transition-colors"
+                  className="font-sans text-xs px-3.5 py-1.5 bg-gradient-to-r from-accent-cyan to-accent-blue hover:from-accent-cyan/90 hover:to-accent-blue/90 text-white font-semibold rounded-full transition-all shadow-[0_0_12px_rgba(100,210,255,0.3)] ios-pressable shrink-0"
                 >
-                  SEND
+                  Return
                 </button>
               </form>
             </div>
 
-            {/* Protocol Architecture Mini Flowchart */}
-            <div className="p-4 rounded border border-border-subtle bg-bg-surface/40 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-text-muted">
+            {/* Pipeline Flow Strip */}
+            <div className="p-4 rounded-2xl liquid-glass border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-sans text-slate-600 dark:text-white/60">
               <div className="flex items-center gap-2">
-                <span className="text-accent-mint font-bold">FLOW:</span>
-                <span>MONITOR (airmon-ng)</span>
+                <span className="text-accent-blue dark:text-accent-cyan font-bold">PIPELINE:</span>
+                <span>Monitor</span>
                 <span>→</span>
-                <span>CAPTURE (airodump-ng)</span>
+                <span>Capture</span>
                 <span>→</span>
-                <span>VERIFY (aircrack-ng)</span>
+                <span>Verify</span>
                 <span>→</span>
-                <span>CRUNCH (hashcat)</span>
+                <span>Cryptanalysis</span>
               </div>
-              <div className="text-[10px] text-text-secondary">
-                TARGET: 802.11i WPA2-PSK 4-WAY HANDSHAKE INTEGRITY
+              <div className="text-[11px] text-slate-500 dark:text-white/40">
+                802.11 WPA2 4-WAY HANDSHAKE INTEGRITY
               </div>
             </div>
           </div>
@@ -453,3 +459,4 @@ export const OffensiveSecurityLab: React.FC = () => {
     </section>
   );
 };
+

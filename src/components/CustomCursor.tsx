@@ -2,138 +2,185 @@ import React, { useEffect, useRef, useState } from 'react';
 
 export const CustomCursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const [cursorType, setCursorType] = useState<'default' | 'hover' | 'project' | 'security' | 'text'>('default');
-  const [isClicking, setIsClicking] = useState(false);
+  const glassRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
-    // Check if fine pointer is supported (desktop mouse)
-    const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-    if (!isFinePointer) return;
+    let mouseX = -200;
+    let mouseY = -200;
+    let glassX = -200;
+    let glassY = -200;
+    let hasMoved = false;
+    let isFinePointerActive = false;
+    let animationFrameId: number | null = null;
 
-    document.body.classList.add('custom-cursor-enabled');
-    setIsVisible(true);
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
-    let animationFrameId: number;
-
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-      }
-
-      // Check context of hovered element
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-
-      const projectTarget = target.closest('[data-cursor="project"]');
-      const securityTarget = target.closest('[data-cursor="security"]');
-      const interactiveTarget = target.closest('button, a, input, textarea, [data-cursor="pointer"]');
-
-      if (projectTarget) {
-        setCursorType('project');
-      } else if (securityTarget) {
-        setCursorType('security');
-      } else if (interactiveTarget) {
-        setCursorType('hover');
-      } else {
-        setCursorType('default');
+    const enableFineCursor = () => {
+      if (!isFinePointerActive) {
+        isFinePointerActive = true;
+        document.documentElement.classList.add('custom-cursor-enabled');
       }
     };
 
-    const onMouseDown = () => setIsClicking(true);
-    const onMouseUp = () => setIsClicking(false);
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    const disableFineCursor = () => {
+      isFinePointerActive = false;
+      document.documentElement.classList.remove('custom-cursor-enabled');
+      setIsVisible(false);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mouseup', onMouseUp);
+    // Check primary media query on mount
+    const fineMediaQuery = window.matchMedia('(pointer: fine)');
+    if (fineMediaQuery.matches) {
+      enableFineCursor();
+    }
+
+    const onPointerMove = (e: PointerEvent) => {
+      // Touch interaction (phone/tablet screen finger touch)
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+
+      // Mouse or Stylus/Pen interaction (desktop, laptop, or mobile/tablet with OTG mouse/stylus)
+      if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+        enableFineCursor();
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!hasMoved) {
+          hasMoved = true;
+          glassX = mouseX;
+          glassY = mouseY;
+        }
+
+        setIsVisible(true);
+
+        // Immediate repositioning of precision optical bead
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+        }
+
+        // Start animation frame loop if not already running
+        if (animationFrameId === null) {
+          animationFrameId = requestAnimationFrame(render);
+        }
+
+        const target = e.target as HTMLElement | null;
+        if (target) {
+          const isInteractive = target.closest(
+            'button, a, input, textarea, select, [role="button"], [data-cursor="pointer"], .ios-pressable, .liquid-glass, .glass-card, .frosted-squircle, .liquid-lens-capsule'
+          );
+          setIsHovering(!!isInteractive);
+        }
+      }
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+      if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+        enableFineCursor();
+        setIsClicking(true);
+      }
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+      setIsClicking(false);
+    };
+
+    const onMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    const onMouseEnter = () => {
+      if (isFinePointerActive && hasMoved) {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    window.addEventListener('pointerup', onPointerUp, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
-    // Spring interpolation for outer reticle ring
+    // Liquid glass outer follower with smooth spring damping
     const render = () => {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
+      if (isFinePointerActive && hasMoved) {
+        glassX += (mouseX - glassX) * 0.28;
+        glassY += (mouseY - glassY) * 0.28;
 
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+        if (glassRef.current) {
+          glassRef.current.style.transform = `translate3d(${glassX}px, ${glassY}px, 0)`;
+        }
+        animationFrameId = requestAnimationFrame(render);
+      } else {
+        animationFrameId = null;
       }
-      animationFrameId = requestAnimationFrame(render);
     };
 
-    animationFrameId = requestAnimationFrame(render);
-
     return () => {
-      document.body.classList.remove('custom-cursor-enabled');
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointerup', onPointerUp);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      document.documentElement.classList.remove('custom-cursor-enabled');
     };
   }, []);
 
-  if (!isVisible) return null;
-
   return (
     <>
-      {/* Precision Center Dot */}
+      {/* Precision Center Optical Bead */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 -ml-1 -mt-1 w-2 h-2 rounded-full pointer-events-none z-[9999] transition-transform duration-75"
-        style={{
-          backgroundColor: cursorType === 'security' ? '#FF5370' : cursorType === 'project' ? '#62D9FF' : '#7CFFB2',
-          boxShadow: `0 0 10px ${cursorType === 'security' ? 'rgba(255,83,112,0.8)' : '#7CFFB2'}`,
-        }}
-      />
-
-      {/* Dynamic Reticle Outer Ring */}
-      <div
-        ref={ringRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9998] transition-all duration-200 ease-out flex items-center justify-center ${
-          isClicking ? 'scale-75' : 'scale-100'
+        aria-hidden="true"
+        className={`fixed top-0 left-0 pointer-events-none z-[10000] will-change-transform transition-opacity duration-150 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
         }`}
-        style={{
-          width: cursorType === 'project' ? '44px' : cursorType === 'security' ? '48px' : cursorType === 'hover' ? '36px' : '24px',
-          height: cursorType === 'project' ? '44px' : cursorType === 'security' ? '48px' : cursorType === 'hover' ? '36px' : '24px',
-          marginLeft: cursorType === 'project' ? '-22px' : cursorType === 'security' ? '-24px' : cursorType === 'hover' ? '-18px' : '-12px',
-          marginTop: cursorType === 'project' ? '-22px' : cursorType === 'security' ? '-24px' : cursorType === 'hover' ? '-18px' : '-12px',
-        }}
+        style={{ transform: 'translate3d(-200px, -200px, 0)' }}
       >
-        {cursorType === 'project' ? (
-          // Inspection reticle with corner brackets for projects
-          <div className="w-full h-full relative border border-accent-cyan/50 rotate-45">
-            <span className="absolute -top-1 -left-1 w-1.5 h-1.5 border-t border-l border-accent-cyan" />
-            <span className="absolute -bottom-1 -right-1 w-1.5 h-1.5 border-b border-r border-accent-cyan" />
-          </div>
-        ) : cursorType === 'security' ? (
-          // Security radar targeting crosshair
-          <div className="w-full h-full relative border border-accent-crimson/60 rounded-full animate-spin-slow">
-            <span className="absolute top-1/2 left-0 w-1.5 h-[1px] bg-accent-crimson -translate-y-1/2" />
-            <span className="absolute top-1/2 right-0 w-1.5 h-[1px] bg-accent-crimson -translate-y-1/2" />
-            <span className="absolute top-0 left-1/2 w-[1px] h-1.5 bg-accent-crimson -translate-x-1/2" />
-            <span className="absolute bottom-0 left-1/2 w-[1px] h-1.5 bg-accent-crimson -translate-x-1/2" />
-          </div>
-        ) : (
-          // Standard sleek minimal ring
-          <div
-            className={`w-full h-full rounded-full border transition-colors duration-200 ${
-              cursorType === 'hover'
-                ? 'border-accent-mint/70 bg-accent-mint/5'
-                : 'border-white/20'
-            }`}
-          />
-        )}
+        <div
+          className={`w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-transform duration-150 ${
+            isHovering ? 'scale-0' : 'bg-accent-cyan shadow-[0_0_10px_rgba(100,210,255,0.9),0_0_2px_rgba(0,0,0,0.5)]'
+          }`}
+        />
+      </div>
+
+      {/* Translucent Liquid Glass Optical Orb Follower */}
+      <div
+        ref={glassRef}
+        aria-hidden="true"
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-150 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{ transform: 'translate3d(-200px, -200px, 0)' }}
+      >
+        <div
+          className={`rounded-full backdrop-blur-[14px] saturate-[180%] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)] flex items-center justify-center ${
+            isHovering
+              ? 'w-14 h-14 bg-accent-cyan/[0.14] dark:bg-accent-cyan/[0.12] border border-accent-cyan/60 dark:border-accent-cyan/50 shadow-[0_0_28px_rgba(100,210,255,0.45),inset_0_2px_3px_rgba(255,255,255,0.85)]'
+              : 'w-10 h-10 bg-slate-900/[0.08] dark:bg-white/[0.08] border border-slate-900/20 dark:border-white/30 shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_1.5px_2px_rgba(255,255,255,0.7),inset_0_-1px_1px_rgba(0,0,0,0.2)]'
+          } ${isClicking ? 'scale-85 brightness-125' : 'scale-100'}`}
+        >
+          {isHovering && (
+            <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-ping opacity-80" />
+          )}
+        </div>
       </div>
     </>
   );

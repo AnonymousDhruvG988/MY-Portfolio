@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_DATA, type SkillNode } from '../data/portfolioData';
 import { audioSystem } from '../utils/audioSystem';
-import { BrainCircuit, Sparkles, Compass, Check, ArrowRight } from 'lucide-react';
+import { BrainCircuit, Zap, Compass, Check, ArrowRight } from 'lucide-react';
 
 export const CurrentlyLearningSection: React.FC = () => {
   const [activeNode, setActiveNode] = useState<SkillNode>(PORTFOLIO_DATA.skills[0]);
@@ -13,90 +13,92 @@ export const CurrentlyLearningSection: React.FC = () => {
   });
 
   return (
-    <section id="learning" className="relative py-24 bg-bg-base border-t border-border-subtle">
-      {/* Decorative Matrix Grid */}
-      <div className="absolute inset-0 tech-grid-dense opacity-20 pointer-events-none" />
+    <section id="learning" className="relative py-28 overflow-hidden">
+      {/* Background Soft Refraction */}
+      <div className="absolute top-1/2 right-10 w-96 h-96 bg-accent-cyan/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 border-b border-border-subtle pb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-6 border-b border-slate-200 dark:border-white/10">
           <div>
-            <div className="font-mono text-xs text-accent-mint tracking-widest uppercase mb-2 flex items-center gap-2">
-              <BrainCircuit className="w-3.5 h-3.5 text-accent-mint" />
-              LIVING LEARNING SYSTEM // 04
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 mb-3 border border-slate-300/80 dark:border-white/10">
+              <BrainCircuit className="w-3.5 h-3.5 text-accent-blue dark:text-accent-cyan" />
+              <span className="font-sans text-xs font-semibold text-slate-700 dark:text-white/80">
+                Evolving Knowledge Graph
+              </span>
             </div>
-            <h2 className="font-display font-black text-4xl sm:text-6xl text-text-primary tracking-tight">
-              CURRENTLY LEARNING
+            <h2 className="font-display font-extrabold text-4xl sm:text-6xl text-slate-900 dark:text-white tracking-tight">
+              Currently Learning
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-xl">
-              An evolving node system. Honest classifications without fake progress bars or inflated metrics.
+            <p className="mt-2 text-base text-slate-600 dark:text-white/70 max-w-xl font-sans">
+              An active learning ecosystem. Honest classifications with zero fabricated progress bars or false credentials.
             </p>
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-1.5 font-mono text-xs">
+          {/* Segmented Control Filter Pills */}
+          <div className="liquid-glass p-1.5 rounded-full flex flex-wrap gap-1 border border-slate-200 dark:border-white/15">
             <button
               onClick={() => {
                 setFilterCategory('ALL');
                 audioSystem.playHover();
               }}
-              className={`px-3 py-1 rounded transition-colors ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-all ios-pressable ${
                 filterCategory === 'ALL'
-                  ? 'bg-accent-mint text-bg-void font-semibold'
-                  : 'bg-bg-surface text-text-muted hover:text-text-primary border border-border-subtle'
+                  ? 'bg-slate-900 text-white dark:bg-white dark:text-black shadow-[0_2px_10px_rgba(0,0,0,0.15)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-white/60 dark:hover:text-white'
               }`}
             >
-              ALL NODES ({PORTFOLIO_DATA.skills.length})
+              All ({PORTFOLIO_DATA.skills.length})
             </button>
             <button
               onClick={() => {
                 setFilterCategory('KNOWN');
                 audioSystem.playHover();
               }}
-              className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-all flex items-center gap-1.5 ios-pressable ${
                 filterCategory === 'KNOWN'
-                  ? 'bg-accent-mint text-bg-void font-semibold'
-                  : 'bg-bg-surface text-text-muted hover:text-text-primary border border-border-subtle'
+                  ? 'bg-emerald-500 text-white dark:bg-ios-green dark:text-black font-bold shadow-[0_0_15px_rgba(48,209,88,0.4)]'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-white/60 dark:hover:text-white'
               }`}
             >
               <Check className="w-3 h-3" />
-              WORKING WITH
+              Working With
             </button>
             <button
               onClick={() => {
                 setFilterCategory('LEARNING');
                 audioSystem.playHover();
               }}
-              className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-all flex items-center gap-1.5 ios-pressable ${
                 filterCategory === 'LEARNING'
-                  ? 'bg-accent-cyan text-bg-void font-semibold'
-                  : 'bg-bg-surface text-text-muted hover:text-text-primary border border-border-subtle'
+                  ? 'bg-accent-blue text-white dark:bg-accent-cyan dark:text-black font-bold shadow-[0_0_15px_rgba(100,210,255,0.4)]'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-white/60 dark:hover:text-white'
               }`}
             >
-              <Sparkles className="w-3 h-3" />
-              EXPANDING
+              <Zap className="w-3 h-3" />
+              Expanding
             </button>
             <button
               onClick={() => {
                 setFilterCategory('EXPLORING');
                 audioSystem.playHover();
               }}
-              className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-all flex items-center gap-1.5 ios-pressable ${
                 filterCategory === 'EXPLORING'
-                  ? 'bg-accent-amber text-bg-void font-semibold'
-                  : 'bg-bg-surface text-text-muted hover:text-text-primary border border-border-subtle'
+                  ? 'bg-amber-500 text-white dark:bg-accent-amber dark:text-black font-bold shadow-[0_0_15px_rgba(255,159,10,0.4)]'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-white/60 dark:hover:text-white'
               }`}
             >
               <Compass className="w-3 h-3" />
-              EXPLORING
+              Exploring
             </button>
           </div>
         </div>
 
-        {/* 2-Column Responsive Layout: Dynamic Nodes Grid (Left 7 cols) & Active Node Inspector (Right 5 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Interactive Evolving Node Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* 2-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+          {/* Left Column: Interactive Node Cards */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {filteredSkills.map((skill) => {
               const isActive = activeNode.name === skill.name;
               return (
@@ -110,52 +112,41 @@ export const CurrentlyLearningSection: React.FC = () => {
                     setActiveNode(skill);
                     audioSystem.playHover();
                   }}
-                  className={`p-4 rounded border transition-all duration-200 cursor-pointer relative overflow-hidden group ${
+                  className={`p-5 rounded-[26px] transition-all duration-300 cursor-pointer relative overflow-hidden group ios-pressable hover:-translate-y-1 hover:shadow-xl ${
                     isActive
-                      ? 'bg-bg-surface border-accent-mint shadow-[0_0_16px_rgba(124,255,178,0.15)]'
-                      : 'bg-bg-surface/50 border-border-subtle hover:border-border-bright hover:bg-bg-surface/80'
+                      ? 'liquid-glass-elevated border-accent-blue/50 dark:border-accent-cyan/60 shadow-[0_12px_30px_rgba(100,210,255,0.18)]'
+                      : 'liquid-glass hover:bg-slate-50 dark:hover:bg-white/[0.08] hover:border-slate-300 dark:hover:border-white/30 border-slate-200 dark:border-white/10'
                   }`}
                 >
-                  {/* Subtle left category indicator */}
-                  <div
-                    className={`absolute top-0 bottom-0 left-0 w-1 ${
-                      skill.category === 'KNOWN'
-                        ? 'bg-accent-mint'
-                        : skill.category === 'LEARNING'
-                        ? 'bg-accent-cyan'
-                        : 'bg-accent-amber'
-                    }`}
-                  />
-
-                  <div className="flex items-center justify-between mb-1 pl-2">
-                    <span className="font-display font-bold text-base text-text-primary group-hover:text-accent-mint transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-sans font-bold text-base text-slate-900 dark:text-white group-hover:text-accent-blue dark:group-hover:text-accent-cyan transition-colors">
                       {skill.name}
                     </span>
                     <span
-                      className={`font-mono text-[9px] px-1.5 py-0.5 rounded border uppercase ${
+                      className={`font-sans text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
                         skill.category === 'KNOWN'
-                          ? 'border-accent-mint/30 text-accent-mint bg-accent-mint/10'
+                          ? 'border-emerald-500/30 text-emerald-600 dark:text-ios-green bg-emerald-500/10'
                           : skill.category === 'LEARNING'
-                          ? 'border-accent-cyan/30 text-accent-cyan bg-accent-cyan/10'
-                          : 'border-accent-amber/30 text-accent-amber bg-accent-amber/10'
+                          ? 'border-accent-blue/30 text-accent-blue dark:text-accent-cyan bg-accent-blue/10 dark:bg-accent-cyan/10'
+                          : 'border-amber-500/30 text-amber-600 dark:text-accent-amber bg-amber-500/10'
                       }`}
                     >
                       {skill.category === 'KNOWN'
-                        ? 'WORKING WITH'
+                        ? 'WORKING'
                         : skill.category === 'LEARNING'
                         ? 'LEARNING'
                         : 'EXPLORING'}
                     </span>
                   </div>
 
-                  <p className="text-xs text-text-muted line-clamp-1 pl-2 font-normal">
+                  <p className="text-xs text-slate-600 dark:text-white/60 line-clamp-1 mb-3 font-sans">
                     {skill.focus}
                   </p>
 
-                  <div className="mt-3 pt-2 border-t border-border-subtle/50 flex items-center justify-between pl-2 font-mono text-[10px] text-text-muted">
-                    <span>TYPE: {skill.type}</span>
-                    <span className="flex items-center gap-1 group-hover:text-accent-mint transition-colors">
-                      INSPECT <ArrowRight className="w-2.5 h-2.5" />
+                  <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-white/40">
+                    <span>{skill.type}</span>
+                    <span className="flex items-center gap-1 text-slate-600 dark:text-white/60 group-hover:text-accent-blue dark:group-hover:text-accent-cyan font-sans text-xs transition-colors">
+                      Inspect <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
                 </div>
@@ -163,65 +154,65 @@ export const CurrentlyLearningSection: React.FC = () => {
             })}
           </div>
 
-          {/* Right Column: Central Learning Node Telemetry Inspector */}
+          {/* Right Column: Central Learning Node Telemetry Widget */}
           <div className="lg:col-span-5 sticky top-28">
-            <div className="p-6 rounded-lg border border-border-bright bg-bg-surface/90 bracket-box shadow-xl">
-              <div className="flex items-center justify-between border-b border-border-subtle pb-3 mb-5 font-mono text-xs">
-                <span className="text-accent-mint font-semibold flex items-center gap-2">
+            <div className="p-7 rounded-[32px] liquid-glass-elevated border border-slate-200 dark:border-white/20 shadow-2xl frosted-squircle space-y-5">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3">
+                <span className="text-accent-blue dark:text-accent-cyan font-bold font-sans text-xs flex items-center gap-2">
                   <BrainCircuit className="w-4 h-4" />
-                  NODE_TELEMETRY // {activeNode.name}
+                  Node Inspector // {activeNode.name}
                 </span>
-                <span className="text-[10px] text-text-muted uppercase">
-                  CLASSIFICATION: {activeNode.category}
+                <span className="text-[10px] font-mono text-slate-500 dark:text-white/40 uppercase">
+                  {activeNode.type}
                 </span>
               </div>
 
               {/* Status Badge */}
-              <div className="mb-4">
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider block mb-1">
-                  CURRENT STATUS
+              <div>
+                <span className="font-sans text-[10px] text-slate-500 dark:text-white/40 uppercase font-semibold block mb-1.5">
+                  Current Trajectory
                 </span>
                 <span
-                  className={`inline-block font-mono text-xs px-2.5 py-1 rounded font-semibold ${
+                  className={`inline-block font-sans text-xs px-3 py-1.5 rounded-full font-bold ${
                     activeNode.category === 'KNOWN'
-                      ? 'bg-accent-mint/15 text-accent-mint border border-accent-mint/40'
+                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-ios-green border border-emerald-500/30'
                       : activeNode.category === 'LEARNING'
-                      ? 'bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/40'
-                      : 'bg-accent-amber/15 text-accent-amber border border-accent-amber/40'
+                      ? 'bg-accent-blue/10 text-accent-blue dark:bg-accent-cyan/15 dark:text-accent-cyan border border-accent-blue/30 dark:border-accent-cyan/30'
+                      : 'bg-amber-500/10 text-amber-600 dark:bg-accent-amber/15 dark:text-accent-amber border border-amber-500/30'
                   }`}
                 >
                   {activeNode.category === 'KNOWN'
-                    ? '● ACTIVELY WORKING & EXPERIMENTING WITH'
+                    ? '● Active Working Knowledge'
                     : activeNode.category === 'LEARNING'
-                    ? '▲ ACTIVELY EXPANDING SKILLSET & PRACTICING'
-                    : '◆ EXPLORING SYSTEM FOUNDATIONS'}
+                    ? '▲ Rapid Skill Expansion'
+                    : '◆ Foundational Exploration'}
                 </span>
               </div>
 
               {/* Focus Area */}
-              <div className="mb-4">
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider block mb-1">
-                  CORE TECHNICAL FOCUS
+              <div>
+                <span className="font-sans text-[10px] text-slate-500 dark:text-white/40 uppercase font-semibold block mb-1.5">
+                  Technical Core Focus
                 </span>
-                <div className="text-sm font-medium text-text-primary bg-bg-void/60 p-3 rounded border border-border-subtle">
+                <div className="text-sm font-semibold text-slate-900 dark:text-white bg-slate-100/90 dark:bg-black/40 p-4 rounded-2xl border border-slate-200 dark:border-white/10 font-sans">
                   {activeNode.focus}
                 </div>
               </div>
 
               {/* Why I'm Learning It */}
-              <div className="mb-5">
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider block mb-1">
-                  RATIONALE & ARCHITECTURAL MOTIVATION
+              <div>
+                <span className="font-sans text-[10px] text-slate-500 dark:text-white/40 uppercase font-semibold block mb-1.5">
+                  Architectural Rationale
                 </span>
-                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed bg-bg-void/40 p-3 rounded border border-border-subtle">
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-white/80 leading-relaxed bg-slate-100/80 dark:bg-black/30 p-4 rounded-2xl border border-slate-200 dark:border-white/10 font-sans">
                   {activeNode.whyLearning}
                 </p>
               </div>
 
-              {/* Engineering Principle Notice */}
-              <div className="pt-3 border-t border-border-subtle/70 font-mono text-[11px] text-text-muted flex items-center justify-between">
-                <span>VERIFIED REAL SKILLS</span>
-                <span className="text-accent-mint">NO INFLATED METRICS</span>
+              {/* Trust Seal */}
+              <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-sans text-slate-500 dark:text-white/40">
+                <span>Verified Practical Competence</span>
+                <span className="text-emerald-600 dark:text-accent-mint font-semibold">100% Genuine</span>
               </div>
             </div>
           </div>

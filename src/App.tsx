@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { CustomCursor } from './components/CustomCursor';
 import { SystemInitialization } from './components/SystemInitialization';
 import { Navigation } from './components/Navigation';
+import { InnovativeScrollBar } from './components/InnovativeScrollBar';
+import { ScrollReveal } from './components/ScrollReveal';
 import { HeroSection } from './components/HeroSection';
 import { OffensiveSecurityLab } from './components/OffensiveSecurityLab';
 import { ProjectsSection } from './components/ProjectsSection';
@@ -15,13 +17,25 @@ import { DiagnosticOverrideModal } from './components/DiagnosticOverrideModal';
 import { audioSystem } from './utils/audioSystem';
 
 export function App() {
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(() => {
+    try {
+      return !!sessionStorage.getItem('dhruv_system_initialized');
+    } catch {
+      return false;
+    }
+  });
   const [isOverrideOpen, setIsOverrideOpen] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const [keySequence, setKeySequence] = useState<string>('');
 
   const triggerOverride = useCallback(() => {
     setIsOverrideOpen(true);
     audioSystem.playAccessGranted();
+  }, []);
+
+  const handleToggleSound = useCallback(() => {
+    const newState = audioSystem.toggleSound();
+    setSoundEnabled(newState);
   }, []);
 
   // Keyboard sequence detector for 'kali' or 'hack' easter eggs
@@ -43,46 +57,103 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [keySequence, triggerOverride]);
 
+  // Ensure webpage always starts strictly at the top (Home)
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // Reset anchor hash on initial load so browser does not jump down to middle sections
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    const t1 = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 50);
+    const t2 = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 180);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isInitialized) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [isInitialized]);
+
   return (
-    <div className="min-h-screen bg-bg-void text-text-primary selection:bg-accent-mint selection:text-bg-void relative overflow-x-hidden">
-      {/* Cinematic Custom Cursor (Desktop Only) */}
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-black text-slate-900 dark:text-white selection:bg-accent-cyan selection:text-black relative overflow-x-hidden font-sans transition-colors duration-300">
+      {/* Aurora Ambient Background Mesh */}
+      <div className="fixed inset-0 aurora-mesh pointer-events-none z-0 opacity-70" />
+
+      {/* Non-blocking Specular Halo Optical Follower */}
       <CustomCursor />
 
-      {/* Opening Cinematic Initialization (1.5 - 2.5s, skippable) */}
+      {/* Translucent Interactive Scroll Rail */}
+      <InnovativeScrollBar />
+
+      {/* Cinematic System Initialization (skippable) */}
       {!isInitialized && (
         <SystemInitialization onComplete={() => setIsInitialized(true)} />
       )}
 
-      {/* Main Engineering Interface */}
-      <div className={`transition-opacity duration-700 ${isInitialized ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Fixed Engineering Header */}
-        <Navigation onTriggerOverride={triggerOverride} />
+      {/* Main Portfolio Interface */}
+      <div className={`relative z-10 transition-opacity duration-700 ${isInitialized ? 'opacity-100' : 'opacity-0'}`}>
+        {/* Buttery-Smooth Fluid Floating Navigation Bar */}
+        <Navigation 
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
+          onTriggerOverride={triggerOverride} 
+        />
 
-        {/* Hero Section with Interactive Digital Core */}
+        {/* Hero Section with Spatial Canvas */}
         <HeroSection />
 
         {/* Dedicated Kali Linux & Offensive Security Lab Section */}
-        <OffensiveSecurityLab />
+        <ScrollReveal>
+          <OffensiveSecurityLab />
+        </ScrollReveal>
 
-        {/* Selected Work & Case Files */}
-        <ProjectsSection />
+        {/* Selected Work & Spatial Case Files */}
+        <ScrollReveal>
+          <ProjectsSection />
+        </ScrollReveal>
 
-        {/* Currently Learning Living Node Graph */}
-        <CurrentlyLearningSection />
+        {/* Living Learning Node Graph & Segmented Controls */}
+        <ScrollReveal>
+          <CurrentlyLearningSection />
+        </ScrollReveal>
 
         {/* Engineering Strengths & Qualities */}
-        <StrengthsSection />
+        <ScrollReveal>
+          <StrengthsSection />
+        </ScrollReveal>
 
         {/* Live Code Workbench */}
-        <CodeWorkbench />
+        <ScrollReveal>
+          <CodeWorkbench />
+        </ScrollReveal>
 
-        {/* About & Digital Identity */}
-        <AboutSection />
+        {/* Developer Identity & Philosophy */}
+        <ScrollReveal>
+          <AboutSection />
+        </ScrollReveal>
 
-        {/* Verified Contact & Communication Channels */}
-        <ContactSection />
+        {/* Communication Hub & Dispatcher */}
+        <ScrollReveal>
+          <ContactSection />
+        </ScrollReveal>
 
-        {/* Technical Footer */}
+        {/* Minimalist Footer */}
         <Footer />
 
         {/* Diagnostic System Override Easter Egg Modal */}

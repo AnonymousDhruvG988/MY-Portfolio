@@ -50,10 +50,12 @@ export const HeroCoreVisualization: React.FC = () => {
       'SHA256', '802.11', 'bssid_scan', 'def audit():',
     ];
 
-    const nodeCount = 38;
+    // Section 11: Reduce particle count and parallax on mobile
+    const isMobile = window.innerWidth < 768;
+    const nodeCount = isMobile ? 14 : 38;
     const nodes: Node[] = [];
     for (let i = 0; i < nodeCount; i++) {
-      const radius = 180 + Math.random() * 80;
+      const radius = (isMobile ? 120 : 180) + Math.random() * (isMobile ? 50 : 80);
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
 
@@ -64,7 +66,7 @@ export const HeroCoreVisualization: React.FC = () => {
         vx: (Math.random() - 0.5) * 0.004,
         vy: (Math.random() - 0.5) * 0.004,
         vz: (Math.random() - 0.5) * 0.004,
-        label: i < codeTokens.length ? codeTokens[i] : undefined,
+        label: !isMobile && i < codeTokens.length ? codeTokens[i] : undefined,
       });
     }
 
@@ -73,27 +75,31 @@ export const HeroCoreVisualization: React.FC = () => {
 
     let isVisible = true;
     const observer = new IntersectionObserver(([entry]) => {
+      const wasVisible = isVisible;
       isVisible = entry.isIntersecting;
+      if (!wasVisible && isVisible) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(render);
+      }
     });
     observer.observe(canvas);
 
     const render = () => {
-      if (!isVisible) {
-        animationFrameId = requestAnimationFrame(render);
-        return;
-      }
+      if (!isVisible) return;
 
       ctx.clearRect(0, 0, width, height);
 
-      // Smooth mouse damping
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      // Smooth mouse damping (only on desktop to reduce mobile parallax per Section 11)
+      if (!isMobile) {
+        mouseX += (targetMouseX - mouseX) * 0.05;
+        mouseY += (targetMouseY - mouseY) * 0.05;
+      }
 
-      const mouseNormX = (mouseX / width - 0.5) * 2;
-      const mouseNormY = (mouseY / height - 0.5) * 2;
+      const mouseNormX = isMobile ? 0 : (mouseX / width - 0.5) * 2;
+      const mouseNormY = isMobile ? 0 : (mouseY / height - 0.5) * 2;
 
-      angleY += 0.003 + mouseNormX * 0.004;
-      angleX += 0.001 + mouseNormY * 0.003;
+      angleY += 0.0025 + mouseNormX * 0.003;
+      angleX += 0.001 + mouseNormY * 0.002;
 
       const centerX = width * 0.65; // Positioned symmetrically towards right side of hero
       const centerY = height * 0.48;

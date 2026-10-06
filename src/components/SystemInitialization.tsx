@@ -7,40 +7,43 @@ interface SystemInitializationProps {
 
 export const SystemInitialization: React.FC<SystemInitializationProps> = ({ onComplete }) => {
   const [stage, setStage] = useState<number>(0);
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>('INITIALIZING TRANSLUCENT SYSTEM CORE...');
 
   useEffect(() => {
+    // If already seen in this session, skip immediately
+    if (sessionStorage.getItem('dhruv_system_initialized')) {
+      onComplete();
+      return;
+    }
+
     // Respect prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
+      sessionStorage.setItem('dhruv_system_initialized', 'true');
       onComplete();
       return;
     }
 
     const t1 = setTimeout(() => {
       setStage(1);
-      setText('INITIALIZING DEVELOPER PROFILE...');
+      setText('MOUNTING KALI LINUX LAB // ACTIVE');
       audioSystem.playHover();
-    }, 400);
+    }, 250);
 
     const t2 = setTimeout(() => {
       setStage(2);
-      setText('SCANNING LOCAL WORKSPACE // KALI_ENV_VERIFIED');
-      audioSystem.playHover();
-    }, 1100);
-
-    const t3 = setTimeout(() => {
-      setStage(3);
       setText('IDENTITY VERIFIED // DHRUV GOSWAMI');
       audioSystem.playAccessGranted();
-    }, 1900);
+    }, 600);
 
-    const t4 = setTimeout(() => {
+    const t3 = setTimeout(() => {
+      sessionStorage.setItem('dhruv_system_initialized', 'true');
       onComplete();
-    }, 2500);
+    }, 1050);
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || e.key === ' ') {
+      if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+        sessionStorage.setItem('dhruv_system_initialized', 'true');
         onComplete();
       }
     };
@@ -51,72 +54,74 @@ export const SystemInitialization: React.FC<SystemInitializationProps> = ({ onCo
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      clearTimeout(t4);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [onComplete]);
 
+  const handleSkip = () => {
+    sessionStorage.setItem('dhruv_system_initialized', 'true');
+    onComplete();
+  };
+
   return (
     <div
-      onClick={onComplete}
-      className="fixed inset-0 z-[10000] bg-bg-void flex flex-col items-center justify-center p-6 cursor-pointer select-none"
+      onClick={handleSkip}
+      className="fixed inset-0 z-[10000] bg-[#030712] flex flex-col items-center justify-center p-6 cursor-pointer select-none system-boot-screen gpu-layer"
     >
-      {/* Scanline overlay */}
-      <div className="absolute inset-0 scanlines opacity-40 pointer-events-none" />
+      {/* Aurora Refraction Orbs in Boot */}
+      <div className="absolute w-[450px] h-[450px] bg-accent-blue/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute w-[350px] h-[350px] bg-accent-cyan/15 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Grid background */}
-      <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
-
-      {/* Center Cinematic Initialization Core */}
+      {/* Center Boot Capsule */}
       <div className="relative z-10 flex flex-col items-center max-w-md w-full text-center">
-        {/* Pulsing micro coordinate dot */}
-        <div className="relative mb-6">
-          <div className="w-2.5 h-2.5 bg-accent-mint rounded-full animate-ping absolute inset-0 opacity-75" />
-          <div className="w-2.5 h-2.5 bg-accent-mint rounded-full relative shadow-[0_0_12px_#7CFFB2]" />
+        {/* Monogram */}
+        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-accent-cyan via-accent-blue to-accent-mint p-[1.5px] shadow-[0_0_30px_rgba(100,210,255,0.4)] mb-6 animate-pulse-subtle">
+          <div className="w-full h-full rounded-[22px] bg-black flex items-center justify-center font-display text-2xl font-black text-accent-cyan">
+            DG
+          </div>
         </div>
 
-        {/* Technical Terminal Status */}
-        <div className="font-mono text-xs text-text-muted tracking-widest uppercase mb-3 flex items-center gap-2">
-          <span className="w-1.5 h-1.5 bg-accent-mint rounded-full animate-pulse" />
-          SYS_BOOT // PROTOCOL_EXEC: 0x7E3
+        {/* Technical Sub-Tag */}
+        <div className="font-sans text-xs text-white/50 tracking-widest uppercase mb-3 flex items-center gap-2">
+          <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+          SYSTEM CORE // INITIALIZING
         </div>
 
         {/* Dynamic Status Text */}
-        <div className="font-mono text-sm md:text-base text-text-primary tracking-wider font-semibold min-h-[32px] flex items-center justify-center">
-          <span className="border-r-2 border-accent-mint pr-1 animate-pulse">
+        <div className="font-sans text-sm md:text-base text-white font-semibold min-h-[32px] flex items-center justify-center">
+          <span className="animate-fade-in text-slate-100">
             {text}
           </span>
         </div>
 
-        {/* Subtle technical line indicators */}
-        <div className="w-48 h-[1px] bg-border-subtle my-5 relative overflow-hidden">
+        {/* Smooth Progress Pill */}
+        <div className="w-56 h-1.5 bg-white/10 rounded-full my-6 overflow-hidden relative">
           <div
-            className="absolute top-0 bottom-0 bg-accent-mint transition-all duration-700 ease-out"
+            className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-mint rounded-full transition-all duration-300 ease-out shadow-[0_0_12px_rgba(100,210,255,0.7)]"
             style={{
-              width: stage === 0 ? '10%' : stage === 1 ? '45%' : stage === 2 ? '80%' : '100%',
-              boxShadow: '0 0 8px #7CFFB2',
+              width: stage === 0 ? '30%' : stage === 1 ? '70%' : '100%',
             }}
           />
         </div>
 
-        {/* System coordinates & telemetry */}
-        <div className="flex justify-between w-full font-mono text-[10px] text-text-muted/60 px-4">
-          <span>LAT: 28.6139° N</span>
-          <span>SYS: LINUX_KERNEL</span>
-          <span>SEC: ENCRYPTED</span>
+        {/* Coordinates */}
+        <div className="flex justify-between w-full font-mono text-[10px] text-white/40 px-6">
+          <span>INDIA // 28.61° N</span>
+          <span>DHRUV_OS</span>
+          <span className="text-emerald-400">ONLINE</span>
         </div>
       </div>
 
-      {/* Skip action in corner */}
+      {/* Skip button */}
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          onComplete();
+          handleSkip();
         }}
-        className="absolute bottom-8 text-xs font-mono text-text-muted hover:text-accent-mint transition-colors px-3 py-1.5 border border-border-subtle hover:border-accent-mint/40 rounded tracking-wider flex items-center gap-2"
+        className="absolute bottom-10 text-xs font-sans text-white/50 hover:text-white transition-colors px-4 py-2 rounded-full border border-white/15 hover:bg-white/10"
       >
-        <span className="text-[10px] opacity-60">[ESC]</span> SKIP INITIALIZATION
+        Tap anywhere or press [ESC] to enter
       </button>
     </div>
   );
