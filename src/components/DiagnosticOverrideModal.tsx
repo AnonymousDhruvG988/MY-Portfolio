@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { audioSystem } from '../utils/audioSystem';
 import { X, ShieldAlert, Cpu, CheckCircle, Terminal } from 'lucide-react';
@@ -10,33 +11,47 @@ interface DiagnosticOverrideModalProps {
 
 export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
-    if (isOpen) {
-      audioSystem.playAccessGranted();
+    if (!isOpen) return;
+
+    audioSystem.playAccessGranted();
+
+    const originalOverflow = document.body.style.overflow;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6 animate-fade-in diagnostic-modal"
+      className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6 animate-fade-in diagnostic-modal"
+      style={{ minHeight: '100vh', width: '100vw' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl bg-[#080D1A] border border-accent-cyan/40 rounded-[36px] shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(100,210,255,0.25)] overflow-hidden flex flex-col frosted-squircle diagnostic-modal"
+        className="w-full max-w-2xl bg-[#080D1A] border border-accent-cyan/40 rounded-[36px] shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(100,210,255,0.25)] overflow-hidden flex flex-col frosted-squircle diagnostic-modal animate-modal-float"
       >
         {/* Modal Header */}
         <div className="bg-[#0B1120] px-6 py-4 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <span className="w-3 h-3 rounded-full glass-traffic-red cursor-pointer" onClick={onClose} />
-            <span className="w-3 h-3 rounded-full glass-traffic-yellow cursor-pointer" />
-            <span className="w-3 h-3 rounded-full glass-traffic-green cursor-pointer" />
+            <span className="w-3 h-3 rounded-full glass-traffic-red cursor-pointer" onClick={onClose} title="Close window" />
+            <span className="w-3 h-3 rounded-full glass-traffic-yellow" />
+            <span className="w-3 h-3 rounded-full glass-traffic-green" />
             <span className="font-sans text-xs sm:text-sm font-bold text-white ml-2 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-accent-cyan" />
               Diagnostic System Override
@@ -47,7 +62,8 @@ export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = (
               audioSystem.playClick();
               onClose();
             }}
-            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white/70"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white/70 hover:text-white transition-all shadow-sm"
+            aria-label="Close Diagnostics"
           >
             <X className="w-4 h-4" />
           </button>
@@ -87,7 +103,7 @@ export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = (
             </div>
             <div className="flex justify-between">
               <span className="text-white/40">SECURITY INTEGRITY:</span>
-              <span className="text-ios-green flex items-center gap-1 font-semibold">
+              <span className="text-emerald-400 flex items-center gap-1 font-semibold">
                 <CheckCircle className="w-3.5 h-3.5" />
                 Ethical Lab Certified
               </span>
@@ -113,6 +129,7 @@ export const DiagnosticOverrideModal: React.FC<DiagnosticOverrideModalProps> = (
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

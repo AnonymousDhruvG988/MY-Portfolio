@@ -63,12 +63,12 @@ export const ProjectCaseFileModal: React.FC<ProjectCaseFileModalProps> = ({ proj
   return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[99999] bg-black/75 backdrop-blur-2xl overflow-y-auto p-4 sm:p-6 md:p-8 flex items-center justify-center animate-fade-in"
+      className="fixed inset-0 z-[99999] bg-black/75 backdrop-blur-2xl overflow-hidden p-3 sm:p-6 md:p-8 flex items-center justify-center animate-fade-in"
       style={{ minHeight: '100vh', width: '100vw' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl my-auto liquid-glass-elevated border border-slate-200/80 dark:border-white/20 rounded-[28px] sm:rounded-[36px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6),0_0_40px_rgba(100,210,255,0.2)] overflow-hidden max-h-[85vh] flex flex-col frosted-squircle animate-modal-float"
+        className="relative w-full max-w-3xl liquid-glass-elevated border border-slate-200/80 dark:border-white/20 rounded-[28px] sm:rounded-[36px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6),0_0_40px_rgba(100,210,255,0.2)] overflow-hidden max-h-[88vh] flex flex-col frosted-squircle animate-modal-float"
       >
         {/* Floating Window Header Bar: macOS Traffic Lights + Title + Close */}
         <div className="bg-slate-100/90 dark:bg-black/40 px-5 sm:px-7 py-3.5 border-b border-slate-200 dark:border-white/10 flex items-center justify-between shrink-0">

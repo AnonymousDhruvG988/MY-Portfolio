@@ -19,6 +19,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+section[id] {
+  scroll-margin-top: 2.5rem;
+}
+
 /* Hide native OS cursor ONLY when a fine precision device (mouse, stylus, OTG mouse) is active */
 html.custom-cursor-enabled,
 html.custom-cursor-enabled *,
