@@ -12,25 +12,14 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   delay = 0 
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => 
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || isVisible) return;
 
-    // Reveal immediately for reduced-motion preference
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setIsVisible(true);
-      return;
-    }
-
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.98) {
-      setIsVisible(true);
-      return;
-    }
-
-    // Pre-emptively reveal with positive margin for butter-smooth 60fps scrolling
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -46,7 +35,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [isVisible]);
 
   return (
     <div

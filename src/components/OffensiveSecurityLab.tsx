@@ -19,7 +19,7 @@ export const OffensiveSecurityLab: React.FC = () => {
   const initialLogs: TerminalLog[] = [
     { id: '1', type: 'info', text: 'Terminal.app [Kali Linux Subsystem v2026.1]' },
     { id: '2', type: 'info', text: 'Kernel: Linux 6.8.0-kali1-amd64 #1 SMP PREEMPT (x86_64)' },
-    { id: '3', type: 'alert', text: '[!] Authorized Local Lab Sandbox. Educational research and defensive security auditing.' },
+    { id: '3', type: 'alert', text: 'Authorized Local Lab Sandbox. Educational research and defensive security auditing.' },
     { id: '4', type: 'info', text: 'Ready. Choose a tool below or enter command: airmon, airodump, aircrack, hashcat, john, recon, help, clear' },
   ];
 
@@ -73,16 +73,16 @@ export const OffensiveSecurityLab: React.FC = () => {
           { id: Math.random().toString(), type: 'info', text: 'Killing 2 interfering processes (NetworkManager, wpa_supplicant)...' },
           { id: Math.random().toString(), type: 'output', text: 'PHY     Interface       Driver          Chipset' },
           { id: Math.random().toString(), type: 'output', text: 'phy0    wlan0           ath9k_htc       Atheros AR9271 802.11n' },
-          { id: Math.random().toString(), type: 'success', text: '[+] (mac80211 monitor mode vif enabled for [phy0]wlan0 on [phy0]wlan0mon)' },
-          { id: Math.random().toString(), type: 'success', text: '[+] Monitor mode active on interface wlan0mon. Ready for raw frame telemetry.' },
+          { id: Math.random().toString(), type: 'success', text: '(mac80211 monitor mode vif enabled for [phy0]wlan0 on [phy0]wlan0mon)' },
+          { id: Math.random().toString(), type: 'success', text: 'Monitor mode active on interface wlan0mon. Ready for raw frame telemetry.' },
         ];
       } else if (lower.includes('airodump-ng')) {
         output = [
           { id: Math.random().toString(), type: 'info', text: 'CH  6 ][ Elapsed: 00:00:14 ][ 2026-10-01 00:54' },
           { id: Math.random().toString(), type: 'output', text: 'BSSID              PWR  Beacons  #Data  #/s  CH   MB   ENC  CIPHER  AUTH  ESSID' },
           { id: Math.random().toString(), type: 'output', text: '00:14:6C:7E:40:80  -42       48    312   12   6  130   WPA2 CCMP    PSK   LAB_TEST_NET' },
-          { id: Math.random().toString(), type: 'alert', text: '[*] WPA Handshake: 00:14:6C:7E:40:80 detected! EAPOL frames (1/4, 2/4, 3/4, 4/4) verified.' },
-          { id: Math.random().toString(), type: 'success', text: '[+] WPA2 handshake captured cleanly to /root/lab/handshake-01.cap' },
+          { id: Math.random().toString(), type: 'alert', text: 'WPA Handshake: 00:14:6C:7E:40:80 detected! EAPOL frames (1/4, 2/4, 3/4, 4/4) verified.' },
+          { id: Math.random().toString(), type: 'success', text: 'WPA2 handshake captured cleanly to /root/lab/handshake-01.cap' },
         ];
       } else if (lower.includes('aircrack-ng')) {
         output = [
@@ -92,7 +92,7 @@ export const OffensiveSecurityLab: React.FC = () => {
           { id: Math.random().toString(), type: 'output', text: '#  BSSID              ESSID                     Encryption' },
           { id: Math.random().toString(), type: 'output', text: '1  00:14:6C:7E:40:80  LAB_TEST_NET              WPA (1 handshake)' },
           { id: Math.random().toString(), type: 'info', text: 'Evaluating EAPOL frame MIC against cryptographic wordlist...' },
-          { id: Math.random().toString(), type: 'success', text: '[+] Handshake verified valid: PMK derived from PBKDF2-HMAC-SHA1 4096 iterations.' },
+          { id: Math.random().toString(), type: 'success', text: 'Handshake verified valid: PMK derived from PBKDF2-HMAC-SHA1 4096 iterations.' },
           { id: Math.random().toString(), type: 'output', text: 'Entropy analysis: 14 character high-entropy key prevents precomputation dictionary attacks.' },
         ];
       } else if (lower.includes('hashcat')) {
@@ -102,7 +102,7 @@ export const OffensiveSecurityLab: React.FC = () => {
           { id: Math.random().toString(), type: 'output', text: 'Device #1: Neural & GPU Core, 16384 MB allocatable' },
           { id: Math.random().toString(), type: 'output', text: 'Hashes: 1 digests; 1 unique digests (WPA-PBKDF2-PMKID+EAPOL)' },
           { id: Math.random().toString(), type: 'output', text: 'Speed.#1.........:   892.4 kH/s (85.22ms) @ Accel:64 Loops:1024' },
-          { id: Math.random().toString(), type: 'success', text: '[+] Status...........: Running (Benchmark / Entropy Audit Mode)' },
+          { id: Math.random().toString(), type: 'success', text: 'Status...........: Running (Benchmark / Entropy Audit Mode)' },
           { id: Math.random().toString(), type: 'info', text: 'Session finished. Cryptographic verification completed.' },
         ];
       } else if (lower.includes('john')) {
@@ -111,16 +111,16 @@ export const OffensiveSecurityLab: React.FC = () => {
           { id: Math.random().toString(), type: 'output', text: 'Cost 1 (iteration count) is 5000 for all loaded hashes' },
           { id: Math.random().toString(), type: 'output', text: 'Proceeding with wordlist mutation rules (JtR Best64 rule matrix)...' },
           { id: Math.random().toString(), type: 'output', text: 'Guesses: 0  time: 0:00:00:02  c/s: 4890  trying: testing123 - security2026' },
-          { id: Math.random().toString(), type: 'success', text: '[+] Audit complete: Salted hash prevents rainbow table lookups.' },
+          { id: Math.random().toString(), type: 'success', text: 'Audit complete: Salted hash prevents rainbow table lookups.' },
         ];
-      } else if (lower.includes('pyrecon') || lower.includes('python')) {
+      } else if (lower.includes('pyrecon') || lower.includes('python') || lower.includes('recon')) {
         output = [
-          { id: Math.random().toString(), type: 'info', text: '[*] PyRecon v1.2: Initializing concurrent socket pool (50 threads)...' },
+          { id: Math.random().toString(), type: 'info', text: 'PyRecon v1.2: Initializing concurrent socket pool (50 threads)...' },
           { id: Math.random().toString(), type: 'output', text: '[+] Target: 192.168.1.0/24 | Ports: 21, 22, 80, 443, 3306, 8080' },
           { id: Math.random().toString(), type: 'output', text: '192.168.1.1:22   -> OPEN [SSH-2.0-OpenSSH_9.6p1 Debian]' },
           { id: Math.random().toString(), type: 'output', text: '192.168.1.1:80   -> OPEN [nginx/1.24.0 (Ubuntu)]' },
           { id: Math.random().toString(), type: 'output', text: '192.168.1.1:3306 -> OPEN [MySQL 8.0.36 - Handshake Accepted]' },
-          { id: Math.random().toString(), type: 'success', text: '[+] Scan complete in 1.42s. 3 open ports, 0 dropped frames.' },
+          { id: Math.random().toString(), type: 'success', text: 'Scan complete in 1.42s. 3 open ports, 0 dropped frames.' },
         ];
       } else if (lower.includes('secret') || lower.includes('flag')) {
         output = [
@@ -209,11 +209,13 @@ export const OffensiveSecurityLab: React.FC = () => {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-colors ${
-                          isSelected
-                            ? 'bg-gradient-to-tr from-accent-cyan to-accent-blue text-white shadow-[0_0_12px_rgba(100,210,255,0.4)]'
-                            : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white/70 group-hover:text-slate-900 dark:group-hover:text-white'
-                        }`}>
+                        <div className={`w-9 h-9 aesthetic-icon-badge ${
+                          tool.category === 'WIRELESS AUDITING'
+                            ? 'aesthetic-icon-cyan'
+                            : tool.category === 'CRYPTANALYSIS'
+                            ? 'aesthetic-icon-amber'
+                            : 'aesthetic-icon-blue'
+                        } flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${isSelected ? 'scale-105' : 'opacity-85'}`}>
                           {tool.category === 'WIRELESS AUDITING' ? (
                             <Wifi className="w-4 h-4" />
                           ) : tool.category === 'CRYPTANALYSIS' ? (

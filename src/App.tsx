@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CustomCursor } from './components/CustomCursor';
+import { CustomCursor } from './components/CustomCursor.tsx';
 import { SystemInitialization } from './components/SystemInitialization';
-import { Navigation } from './components/Navigation';
+import { Navigation } from './components/Navigation.tsx';
 import { InnovativeScrollBar } from './components/InnovativeScrollBar';
 import { ScrollReveal } from './components/ScrollReveal';
 import { HeroSection } from './components/HeroSection';

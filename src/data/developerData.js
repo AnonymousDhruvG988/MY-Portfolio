@@ -6,7 +6,7 @@
 export const DEVELOPER_DATA = {
   profile: {
     name: "Dhruv",
-    initials: "DS",
+    initials: "DG",
     role: "Full-Stack Developer & B.Tech Student",
     degree: "B.Tech in Computer Science & Engineering",
     institution: "B.Tech Engineering",

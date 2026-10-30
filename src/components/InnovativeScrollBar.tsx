@@ -10,7 +10,7 @@ export const InnovativeScrollBar: React.FC = () => {
     let ticking = false;
     let lastSectionCheck = 0;
 
-    const sections = ['work', 'offensive-lab', 'learning', 'strengths', 'workbench', 'identity', 'contact'];
+    const sections = ['hero', 'offensive-lab', 'work', 'learning', 'strengths', 'workbench', 'identity', 'contact'];
 
     const handleScroll = () => {
       if (!ticking) {

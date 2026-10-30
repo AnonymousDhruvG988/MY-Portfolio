@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DEVELOPER_DATA } from '../data/developerData';
 import { sound } from '../utils/soundEngine';
-import { FolderGit2, ExternalLink, X, Code2, Sparkles, ArrowRight } from 'lucide-react';
+import { FolderGit2, X, ArrowRight } from 'lucide-react';
 
 export default function Scene05Projects() {
   const [activeModalProject, setActiveModalProject] = useState(null);

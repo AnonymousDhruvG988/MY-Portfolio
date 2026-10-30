@@ -1,115 +1,178 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-/**
- * SLEEK MODERN MAGNETIC CURSOR
- * 
- * Smooth, floating glow ring + crisp center dot.
- * Expands gently on interactive elements.
- * Desktop only (hidden on touch devices).
- */
 export default function CustomCursor() {
-  const cursorRef = useRef(null);
   const dotRef = useRef(null);
-  const [cursorState, setCursorState] = useState({ label: '', hovered: false, active: false });
-  const mousePos = useRef({ x: -100, y: -100, currentX: -100, currentY: -100 });
-  const isTouchDevice = useRef(false);
+  const glassRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      isTouchDevice.current = true;
-      return;
-    }
+    let mouseX = -200;
+    let mouseY = -200;
+    let glassX = -200;
+    let glassY = -200;
+    let hasMoved = false;
+    let isFinePointerActive = false;
+    let animationFrameId = null;
 
-    document.body.classList.add('custom-cursor-active');
-
-    let animationFrameId;
-
-    const onMouseMove = (e) => {
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
-      if (!cursorState.active) {
-        setCursorState((prev) => ({ ...prev, active: true }));
+    const enableFineCursor = () => {
+      if (!isFinePointerActive) {
+        isFinePointerActive = true;
+        document.documentElement.classList.add('custom-cursor-enabled');
       }
     };
 
-    const onMouseOver = (e) => {
-      const target = e.target.closest('[data-cursor], button, a, input, select');
-      if (target) {
-        const customLabel = target.getAttribute('data-cursor') || '';
-        setCursorState({ label: customLabel, hovered: true, active: true });
-      } else {
-        setCursorState({ label: '', hovered: false, active: true });
+    const disableFineCursor = () => {
+      isFinePointerActive = false;
+      document.documentElement.classList.remove('custom-cursor-enabled');
+      setIsVisible(false);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
       }
+    };
+
+    const fineMediaQuery = window.matchMedia('(pointer: fine)');
+    if (fineMediaQuery.matches) {
+      enableFineCursor();
+    }
+
+    const onPointerMove = (e) => {
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+
+      if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+        enableFineCursor();
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!hasMoved) {
+          hasMoved = true;
+          glassX = mouseX;
+          glassY = mouseY;
+        }
+
+        setIsVisible(true);
+
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+        }
+
+        if (animationFrameId === null) {
+          animationFrameId = requestAnimationFrame(render);
+        }
+
+        const target = e.target;
+        if (target) {
+          const isInteractive = target.closest(
+            'button, a, input, textarea, select, [role="button"], [data-cursor="pointer"], .ios-pressable, .liquid-glass, .glass-card, .frosted-squircle, .liquid-lens-capsule, .aesthetic-icon-badge'
+          );
+          setIsHovering(!!isInteractive);
+        }
+      }
+    };
+
+    const onPointerDown = (e) => {
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+      if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+        enableFineCursor();
+        setIsClicking(true);
+      }
+    };
+
+    const onPointerUp = (e) => {
+      if (e.pointerType === 'touch') {
+        disableFineCursor();
+        return;
+      }
+      setIsClicking(false);
     };
 
     const onMouseLeave = () => {
-      setCursorState((prev) => ({ ...prev, active: false }));
+      setIsVisible(false);
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseover', onMouseOver);
+    const onMouseEnter = () => {
+      if (isFinePointerActive && hasMoved) {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    window.addEventListener('pointerup', onPointerUp, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
 
-    const updateLoop = () => {
-      // Smooth lerp for trailing ring
-      mousePos.current.currentX += (mousePos.current.x - mousePos.current.currentX) * 0.16;
-      mousePos.current.currentY += (mousePos.current.y - mousePos.current.currentY) * 0.16;
+    const render = () => {
+      if (isFinePointerActive && hasMoved) {
+        glassX += (mouseX - glassX) * 0.28;
+        glassY += (mouseY - glassY) * 0.28;
 
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${mousePos.current.currentX}px, ${mousePos.current.currentY}px, 0)`;
+        if (glassRef.current) {
+          glassRef.current.style.transform = `translate3d(${glassX}px, ${glassY}px, 0)`;
+        }
+        animationFrameId = requestAnimationFrame(render);
+      } else {
+        animationFrameId = null;
       }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
-      }
-
-      animationFrameId = requestAnimationFrame(updateLoop);
     };
-
-    animationFrameId = requestAnimationFrame(updateLoop);
 
     return () => {
-      document.body.classList.remove('custom-cursor-active');
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseover', onMouseOver);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointerup', onPointerUp);
       document.removeEventListener('mouseleave', onMouseLeave);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('mouseenter', onMouseEnter);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      document.documentElement.classList.remove('custom-cursor-enabled');
     };
   }, []);
 
-  if (isTouchDevice.current) return null;
-
   return (
     <>
-      {/* Precision Center Dot */}
+      {/* Precision Center Optical Bead */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] transition-opacity duration-300 ${
-          cursorState.active ? 'opacity-100' : 'opacity-0'
+        aria-hidden="true"
+        className={`fixed top-0 left-0 pointer-events-none z-[100000] will-change-transform transition-opacity duration-150 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
         }`}
-        style={{ willChange: 'transform' }}
-      >
-        <div className="w-1.5 h-1.5 -ml-[3px] -mt-[3px] rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-      </div>
-
-      {/* Modern Soft Trailing Glow Ring */}
-      <div
-        ref={cursorRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9998] transition-opacity duration-300 ${
-          cursorState.active ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{ willChange: 'transform' }}
+        style={{ transform: 'translate3d(-200px, -200px, 0)' }}
       >
         <div
-          className={`relative transition-all duration-300 flex items-center justify-center rounded-full ${
-            cursorState.hovered
-              ? 'w-12 h-12 -ml-6 -mt-6 border border-indigo-400/50 bg-indigo-500/10 backdrop-blur-[2px] shadow-[0_0_20px_rgba(99,102,241,0.25)]'
-              : 'w-8 h-8 -ml-4 -mt-4 border border-white/20 bg-transparent'
+          className={`w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-transform duration-150 ${
+            isHovering ? 'scale-0' : 'bg-accent-cyan shadow-[0_0_10px_rgba(100,210,255,0.9),0_0_2px_rgba(0,0,0,0.5)]'
           }`}
+        />
+      </div>
+
+      {/* Translucent Liquid Glass Optical Orb Follower */}
+      <div
+        ref={glassRef}
+        aria-hidden="true"
+        className={`fixed top-0 left-0 pointer-events-none z-[99999] will-change-transform transition-opacity duration-150 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{ transform: 'translate3d(-200px, -200px, 0)' }}
+      >
+        <div
+          className={`rounded-full backdrop-blur-[14px] saturate-[180%] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)] flex items-center justify-center ${
+            isHovering
+              ? 'w-14 h-14 bg-accent-cyan/[0.14] dark:bg-accent-cyan/[0.12] border border-accent-cyan/60 dark:border-accent-cyan/50 shadow-[0_0_28px_rgba(100,210,255,0.45),inset_0_2px_3px_rgba(255,255,255,0.85)]'
+              : 'w-10 h-10 bg-slate-900/[0.08] dark:bg-white/[0.08] border border-slate-900/20 dark:border-white/30 shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_1.5px_2px_rgba(255,255,255,0.7),inset_0_-1px_1px_rgba(0,0,0,0.2)]'
+          } ${isClicking ? 'scale-85 brightness-125' : 'scale-100'}`}
         >
-          {cursorState.label && (
-            <span className="absolute left-10 whitespace-nowrap bg-black/80 backdrop-blur-md border border-white/10 px-2 py-0.5 rounded text-[10px] font-sans font-medium text-white shadow-lg">
-              {cursorState.label}
-            </span>
+          {isHovering && (
+            <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-ping opacity-80" />
           )}
         </div>
       </div>

@@ -5,28 +5,28 @@ import { audioSystem } from '../utils/audioSystem';
 import { GithubIcon } from './BrandIcons';
 import { ArrowRight, Terminal, Shield, Database, Radio, Code2, Layers } from 'lucide-react';
 
+const renderProjectIcon = (category: string) => {
+  if (category.includes('SECURITY')) return <Shield className="w-6 h-6" />;
+  if (category.includes('SQL') || category.includes('DATA')) return <Database className="w-6 h-6" />;
+  if (category.includes('NETWORKING')) return <Radio className="w-6 h-6" />;
+  return <Code2 className="w-6 h-6" />;
+};
+
+const getProjectAestheticClass = (idx: number) => {
+  switch (idx % 4) {
+    case 0:
+      return 'aesthetic-icon-cyan';
+    case 1:
+      return 'aesthetic-icon-amber';
+    case 2:
+      return 'aesthetic-icon-emerald';
+    default:
+      return 'aesthetic-icon-purple';
+  }
+};
+
 export const ProjectsSection: React.FC = () => {
   const [selectedCaseFile, setSelectedCaseFile] = useState<ProjectItem | null>(null);
-
-  const getProjectIcon = (category: string) => {
-    if (category.includes('SECURITY')) return Shield;
-    if (category.includes('SQL') || category.includes('DATA')) return Database;
-    if (category.includes('NETWORKING')) return Radio;
-    return Code2;
-  };
-
-  const getProjectAccentGradient = (idx: number) => {
-    switch (idx % 4) {
-      case 0:
-        return 'from-accent-cyan via-accent-blue to-accent-mint';
-      case 1:
-        return 'from-accent-amber via-orange-500 to-amber-300';
-      case 2:
-        return 'from-accent-mint via-teal-400 to-accent-cyan';
-      default:
-        return 'from-purple-500 via-indigo-500 to-accent-blue';
-    }
-  };
 
   return (
     <section id="work" className="relative py-28 overflow-hidden">
@@ -61,8 +61,7 @@ export const ProjectsSection: React.FC = () => {
         {/* Squircle Experience Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
           {PORTFOLIO_DATA.projects.map((proj, idx) => {
-            const Icon = getProjectIcon(proj.category);
-            const gradient = getProjectAccentGradient(idx);
+            const aestheticClass = getProjectAestheticClass(idx);
 
             return (
               <div
@@ -78,13 +77,11 @@ export const ProjectsSection: React.FC = () => {
                 <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-slate-400/30 dark:via-white/40 to-transparent pointer-events-none" />
 
                 <div>
-                  {/* Top Bar: Icon + Pill */}
+                  {/* Top Bar: Aesthetic Squircle Badge + Number & Category + Pill */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${gradient} p-[1.5px] shadow-[0_0_20px_rgba(100,210,255,0.25)] group-hover:scale-105 transition-transform duration-300`}>
-                        <div className="w-full h-full rounded-[14px] bg-slate-900 dark:bg-black/90 flex items-center justify-center text-white">
-                          <Icon className="w-6 h-6" />
-                        </div>
+                    <div className="flex items-center gap-3.5">
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 aesthetic-icon-badge ${aestheticClass} flex items-center justify-center shrink-0`}>
+                        {renderProjectIcon(proj.category)}
                       </div>
                       <div>
                         <div className="font-mono text-xs text-accent-blue dark:text-accent-cyan font-bold">

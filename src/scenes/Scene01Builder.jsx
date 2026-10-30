@@ -8,7 +8,6 @@ import {
   Shield,
   ArrowRight,
   Sparkles,
-  Layers,
   Cpu
 } from 'lucide-react';
 
@@ -19,8 +18,8 @@ export default function Scene01Builder({ onScrollToScene }) {
       className="chapter-section min-h-screen relative flex items-center justify-center pt-28 pb-20 overflow-hidden"
     >
       {/* Ambient background glows */}
-      <div className="ambient-glow w-[500px] h-[500px] bg-indigo-500 -top-32 -left-32" />
-      <div className="ambient-glow w-[450px] h-[450px] bg-emerald-500 bottom-10 right-0 opacity-10" />
+      <div className="ambient-glow w-[500px] h-[500px] bg-indigo-500/20 -top-32 -left-32" />
+      <div className="ambient-glow w-[450px] h-[450px] bg-emerald-500/15 bottom-10 right-0" />
 
       <div className="scene-container relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
@@ -28,7 +27,7 @@ export default function Scene01Builder({ onScrollToScene }) {
         <div className="lg:col-span-7 flex flex-col space-y-6">
           
           {/* Status Badge */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="modern-badge emerald">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               {DEVELOPER_DATA.profile.statusBadge}
@@ -53,7 +52,7 @@ export default function Scene01Builder({ onScrollToScene }) {
             {DEVELOPER_DATA.profile.heroSubtitle}
           </p>
 
-          <p className="font-body text-sm sm:text-base text-slate-400 max-w-xl leading-relaxed italic border-l-2 border-indigo-500/40 pl-4 py-1">
+          <p className="font-body text-sm sm:text-base text-slate-400 max-w-xl leading-relaxed italic border-l-2 border-indigo-500/50 pl-4 py-1">
             "{DEVELOPER_DATA.profile.bio}"
           </p>
 

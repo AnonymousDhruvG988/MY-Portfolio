@@ -61,10 +61,9 @@ export const ContactSection: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-accent-cyan to-accent-blue p-[1px] shadow-[0_0_15px_rgba(100,210,255,0.3)] group-hover:scale-105 transition-transform duration-300">
-                    <div className="w-full h-full rounded-[14px] bg-slate-900 dark:bg-black/90 flex items-center justify-center text-accent-cyan">
-                      <Mail className="w-6 h-6" />
-                    </div>
+                  {/* Aesthetic Glowing Squircle Badge */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 aesthetic-icon-badge aesthetic-icon-cyan flex items-center justify-center shrink-0">
+                    <Mail className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="text-[10px] font-sans font-semibold text-slate-500 dark:text-white/50 uppercase">DIRECT EMAIL CHANNEL</div>
@@ -103,14 +102,13 @@ export const ContactSection: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               onMouseEnter={() => audioSystem.playHover()}
-              className="group p-6 rounded-[30px] liquid-glass hover:liquid-glass-elevated border border-slate-200 dark:border-white/15 hover:border-accent-cyan/40 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 block relative overflow-hidden frosted-squircle ios-pressable"
+              className="group p-6 rounded-[30px] liquid-glass hover:liquid-glass-elevated border border-slate-200 dark:border-white/15 hover:border-accent-purple/40 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 block relative overflow-hidden frosted-squircle ios-pressable"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 p-[1px] shadow-[0_0_15px_rgba(191,90,242,0.3)] group-hover:scale-105 transition-transform duration-300">
-                    <div className="w-full h-full rounded-[14px] bg-slate-900 dark:bg-black/90 flex items-center justify-center text-white">
-                      <GithubIcon className="w-6 h-6" />
-                    </div>
+                  {/* Aesthetic Glowing Squircle Badge */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 aesthetic-icon-badge aesthetic-icon-purple flex items-center justify-center shrink-0">
+                    <GithubIcon className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="text-[10px] font-sans font-semibold text-slate-500 dark:text-white/50 uppercase">CODE REPOSITORY & COMMITS</div>
@@ -133,18 +131,17 @@ export const ContactSection: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               onMouseEnter={() => audioSystem.playHover()}
-              className="group p-6 rounded-[30px] liquid-glass hover:liquid-glass-elevated border border-slate-200 dark:border-white/15 hover:border-accent-cyan/40 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 block relative overflow-hidden frosted-squircle ios-pressable"
+              className="group p-6 rounded-[30px] liquid-glass hover:liquid-glass-elevated border border-slate-200 dark:border-white/15 hover:border-accent-blue/40 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 block relative overflow-hidden frosted-squircle ios-pressable"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-accent-blue to-accent-cyan p-[1px] shadow-[0_0_15px_rgba(10,132,255,0.3)] group-hover:scale-105 transition-transform duration-300">
-                    <div className="w-full h-full rounded-[14px] bg-slate-900 dark:bg-black/90 flex items-center justify-center text-white">
-                      <LinkedinIcon className="w-6 h-6" />
-                    </div>
+                  {/* Aesthetic Glowing Squircle Badge */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 aesthetic-icon-badge aesthetic-icon-blue flex items-center justify-center shrink-0">
+                    <LinkedinIcon className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="text-[10px] font-sans font-semibold text-slate-500 dark:text-white/50 uppercase">PROFESSIONAL NETWORK</div>
-                    <div className="font-sans text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-accent-blue font-bold transition-colors">
+                    <div className="font-sans text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-accent-blue dark:group-hover:text-accent-cyan font-bold transition-colors">
                       linkedin.com/in/dhruv-goswami
                     </div>
                   </div>

@@ -105,28 +105,28 @@ export const PORTFOLIO_DATA: DeveloperProfile = {
     linkedin: "https://www.linkedin.com/in/dhruv-goswami-96415a435/",
   },
   status: {
-    availability: "AVAILABLE TO LEARN & BUILD",
+    availability: "AVAILABLE FOR INTERNSHIPS & PROJECTS",
     systemMode: "OFFENSIVE LAB // FULL STACK EXPLORATION",
-    learningFocus: "Modern Web Systems, Packet Inspection, Network Protocols",
+    learningFocus: "Software Architecture, Python, SQL, Network & Security Labs",
   },
   hero: {
     systemTag: "DEVELOPER // B.TECH // INDIA",
-    mainTitleLine1: "BUILDING",
-    mainTitleLine2: "WHAT I CAN",
+    mainTitleLine1: "CRAFTING SYSTEMS.",
+    mainTitleLine2: "BUILDING WHAT I",
     mainTitleLine3: "IMAGINE.",
-    subheadline: "B.Tech Student • Python · HTML · SQL · Kali Linux Toolchains",
+    subheadline: "B.Tech Student with a passion for software architecture, Python, SQL, and hands-on cybersecurity lab exploration.",
     philosophies: [
-      "CURIOUS BY DEFAULT",
-      "I LIKE FIGURING THINGS OUT",
-      "UNDERSTAND FROM THE PROTOCOL LEVEL UP",
+      "UNDERSTAND THE FUNDAMENTALS",
+      "BUILD WITH INTENTION",
+      "ITERATE RELENTLESSLY",
     ],
   },
   about: {
-    leadStatement: "I'M INTERESTED IN HOW THINGS WORK BENEATH THE SURFACE.",
+    leadStatement: "UNDERSTAND THE FUNDAMENTALS. BUILD WITH INTENTION. ITERATE RELENTLESSLY.",
     storyParagraphs: [
-      "I am an ambitious B.Tech student who enjoys building software, deconstructing unfamiliar technologies, and solving engineering bottlenecks from first principles.",
+      "I am an ambitious B.Tech student who loves understanding how systems work under the hood — from web protocols and database query plans to socket programming and security testing. I turn technical curiosity into clean, functional software.",
       "Rather than treating code as abstract magic, I want to understand how network packets traverse interfaces, how relational databases execute query plans, how operating system kernels manage hardware, and how modern web systems deliver fluid digital interactions.",
-      "My journey is driven by relentless curiosity: learning Python for automation and scripting, mastering SQL for data architecture, constructing modern web interfaces with HTML, and auditing wireless protocols and cryptographic primitives using Kali Linux.",
+      "My journey is driven by relentless curiosity: mastering Python for automation, systems scripting and socket programming, architecting resilient databases with SQL, constructing high-performance modern web interfaces with HTML & React, and auditing network protocols using Kali Linux.",
     ],
     technicalFoundations: [
       "Python Scripting & Automation",
@@ -389,7 +389,7 @@ export const PORTFOLIO_DATA: DeveloperProfile = {
       name: "Git & GitHub",
       category: "LEARNING",
       type: "TOOL",
-      focus: "Branching, Version Control, Commit Hygeine, Open Source Collaboration",
+      focus: "Branching, Version Control, Commit Hygiene, Open Source Collaboration",
       whyLearning: "Managing codebase history, tracking iterative changes, and publishing projects to GitHub.",
     },
     {

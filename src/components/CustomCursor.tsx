@@ -73,7 +73,7 @@ export const CustomCursor: React.FC = () => {
         const target = e.target as HTMLElement | null;
         if (target) {
           const isInteractive = target.closest(
-            'button, a, input, textarea, select, [role="button"], [data-cursor="pointer"], .ios-pressable, .liquid-glass, .glass-card, .frosted-squircle, .liquid-lens-capsule'
+            'button, a, input, textarea, select, [role="button"], [data-cursor="pointer"], .ios-pressable, .liquid-glass, .glass-card, .frosted-squircle, .liquid-lens-capsule, .aesthetic-icon-badge'
           );
           setIsHovering(!!isInteractive);
         }
@@ -149,7 +149,7 @@ export const CustomCursor: React.FC = () => {
       <div
         ref={dotRef}
         aria-hidden="true"
-        className={`fixed top-0 left-0 pointer-events-none z-[10000] will-change-transform transition-opacity duration-150 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[100000] will-change-transform transition-opacity duration-150 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ transform: 'translate3d(-200px, -200px, 0)' }}
@@ -165,7 +165,7 @@ export const CustomCursor: React.FC = () => {
       <div
         ref={glassRef}
         aria-hidden="true"
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-150 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[99999] will-change-transform transition-opacity duration-150 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ transform: 'translate3d(-200px, -200px, 0)' }}

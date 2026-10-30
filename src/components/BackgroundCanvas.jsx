@@ -4,11 +4,17 @@ import React, { useEffect, useRef } from 'react';
  * MODERN AMBIENT CANVAS BACKGROUND
  * 
  * Luminous floating ambient gradient orbs + subtle interactive constellation particles.
- * Hardware-accelerated 60fps, sleek, luxury aesthetic.
+ * Reacts gracefully to timeDilation.
+ * Hardware-accelerated 60fps, luxury dark aesthetic.
  */
-export default function BackgroundCanvas() {
+export default function BackgroundCanvas({ timeDilation = 1.0 }) {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
+  const dilationRef = useRef(timeDilation);
+
+  useEffect(() => {
+    dilationRef.current = timeDilation;
+  }, [timeDilation]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,15 +44,15 @@ export default function BackgroundCanvas() {
     let particles = [];
     const initParticles = () => {
       particles = [];
-      const count = Math.min(35, Math.floor(width / 40));
+      const count = Math.min(45, Math.floor(width / 35));
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 1.5 + 0.5,
-          alpha: Math.random() * 0.4 + 0.1,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 1.6 + 0.6,
+          alpha: Math.random() * 0.35 + 0.15,
           color: Math.random() > 0.5 ? 'rgba(99, 102, 241,' : 'rgba(52, 211, 153,'
         });
       }
@@ -55,21 +61,22 @@ export default function BackgroundCanvas() {
 
     // Floating ambient glow orbs
     const orbs = [
-      { x: width * 0.2, y: height * 0.25, vx: 0.2, vy: 0.15, r: 260, color: 'rgba(99, 102, 241, 0.045)' },
-      { x: width * 0.8, y: height * 0.65, vx: -0.15, vy: -0.2, r: 320, color: 'rgba(16, 185, 129, 0.04)' },
-      { x: width * 0.5, y: height * 0.85, vx: 0.1, vy: -0.15, r: 280, color: 'rgba(6, 182, 212, 0.035)' }
+      { x: width * 0.2, y: height * 0.25, vx: 0.2, vy: 0.15, r: 280, color: 'rgba(99, 102, 241, 0.05)' },
+      { x: width * 0.8, y: height * 0.65, vx: -0.15, vy: -0.2, r: 340, color: 'rgba(16, 185, 129, 0.045)' },
+      { x: width * 0.5, y: height * 0.85, vx: 0.1, vy: -0.15, r: 300, color: 'rgba(6, 182, 212, 0.04)' }
     ];
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+      const d = dilationRef.current || 1.0;
 
       // 1. Draw soft ambient orbs
       orbs.forEach((orb) => {
         if (!prefersReducedMotion) {
-          orb.x += orb.vx;
-          orb.y += orb.vy;
+          orb.x += orb.vx * d;
+          orb.y += orb.vy * d;
           if (orb.x < 0 || orb.x > width) orb.vx *= -1;
           if (orb.y < 0 || orb.y > height) orb.vy *= -1;
         }
@@ -90,8 +97,8 @@ export default function BackgroundCanvas() {
         const p1 = particles[i];
 
         if (!prefersReducedMotion) {
-          p1.x += p1.vx;
-          p1.y += p1.vy;
+          p1.x += p1.vx * d;
+          p1.y += p1.vy * d;
 
           if (p1.x < 0) p1.x = width;
           if (p1.x > width) p1.x = 0;
@@ -113,7 +120,7 @@ export default function BackgroundCanvas() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < maxDist) {
-            const lineAlpha = (1 - dist / maxDist) * 0.12;
+            const lineAlpha = (1 - dist / maxDist) * 0.14;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
@@ -139,7 +146,7 @@ export default function BackgroundCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-80"
+      className="fixed inset-0 pointer-events-none z-0 opacity-85"
     />
   );
 }

@@ -182,7 +182,7 @@ export const HeroCoreVisualization: React.FC = () => {
 
         if (p.label && p.alpha > 0.45) {
           ctx.font = '10px "JetBrains Mono", monospace';
-          ctx.fillStyle = `rgba(154, 163, 173, ${p.alpha * 0.8})`;
+          const isDark = document.documentElement.classList.contains("dark"); ctx.fillStyle = isDark ? `rgba(154, 163, 173, ${p.alpha * 0.8})` : `rgba(71, 85, 105, ${p.alpha * 0.9})`;
           ctx.fillText(p.label, p.x + 6, p.y + 3);
         }
       });

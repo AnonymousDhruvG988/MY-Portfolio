@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DEVELOPER_DATA } from '../data/developerData';
 import { sound } from '../utils/soundEngine';
-import { Terminal, Cpu, ArrowRight, Code2, Sparkles, Check } from 'lucide-react';
+import { Cpu, ArrowRight, Code2, Check } from 'lucide-react';
 
 export default function Scene06HowIThink() {
   const [activeStepIdx, setActiveStepIdx] = useState(0);

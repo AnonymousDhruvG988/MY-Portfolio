@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DEVELOPER_DATA } from '../data/developerData';
 import { sound } from '../utils/soundEngine';
-import { Sparkles, ChevronRight, ChevronLeft, Target } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Target } from 'lucide-react';
 
 export default function Scene04Strengths() {
   const [activeIdx, setActiveIdx] = useState(0);

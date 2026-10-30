@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { DEVELOPER_DATA } from '../data/developerData';
 import { sound } from '../utils/soundEngine';
 import {
   Shield,

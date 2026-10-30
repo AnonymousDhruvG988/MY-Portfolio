@@ -1,7 +1,9 @@
 import React from 'react';
 import { DEVELOPER_DATA } from '../data/developerData';
 import { sound } from '../utils/soundEngine';
-import { ArrowUp, Sparkles } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Scene09Ending({ onRewindToTop }) {
   const handleRewind = () => {
@@ -53,7 +55,7 @@ export default function Scene09Ending({ onRewindToTop }) {
           <span>Crafted with React, Tailwind CSS & Web Audio API</span>
         </div>
         <div>
-          <span>© {new Date().getFullYear()} {DEVELOPER_DATA.profile.name}. All rights reserved.</span>
+          <span>© {CURRENT_YEAR} {DEVELOPER_DATA.profile.name}. All rights reserved.</span>
         </div>
       </div>
     </footer>

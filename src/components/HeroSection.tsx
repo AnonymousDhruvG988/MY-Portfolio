@@ -6,7 +6,7 @@ import { Shield, ArrowRight, Flame, Terminal, Activity, Wifi, Database } from 'l
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="relative min-h-[96vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+    <section id="hero" className="relative flex flex-col justify-start pt-4 sm:pt-6 pb-10 sm:pb-14 overflow-hidden">
       {/* Dynamic Canvas Particle Core */}
       <HeroCoreVisualization />
 
@@ -18,7 +18,7 @@ export const HeroSection: React.FC = () => {
       {/* Foreground Grid & Glass Layer */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Top System Status Bar Tag */}
-        <div className="flex items-center justify-between mb-8 pb-3 border-b border-slate-200 dark:border-white/[0.08]">
+        <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
             <span className="font-sans text-xs font-semibold text-slate-600 dark:text-white/70 tracking-tight">
@@ -35,11 +35,11 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* Main Composition: Editorial Headline (Left 7 cols) & Control Center Widgets (Right 5 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
           {/* Left Column: Bold Typography */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             {/* System Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 w-fit mb-6 border border-slate-300/80 dark:border-white/10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 w-fit mb-3 border border-slate-300/80 dark:border-white/10">
               <Flame className="w-3.5 h-3.5 text-accent-blue dark:text-accent-cyan" />
               <span className="font-sans text-xs font-semibold text-slate-800 dark:text-white/90">
                 B.Tech Student & Offensive Security Explorer
@@ -47,7 +47,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* Massive Headline with Refraction */}
-            <h1 className="font-display font-extrabold text-5xl sm:text-7xl xl:text-8xl tracking-tight text-slate-900 dark:text-white leading-[0.95] mb-6">
+            <h1 className="font-display font-extrabold text-5xl sm:text-7xl xl:text-8xl tracking-tight text-slate-900 dark:text-white leading-[0.95] mb-3.5">
               <span className="block text-slate-900 dark:text-white/90">{PORTFOLIO_DATA.hero.mainTitleLine1}</span>
               <span className="block text-slate-500 dark:text-white/60 hover:text-slate-900 dark:hover:text-white transition-colors duration-300">
                 {PORTFOLIO_DATA.hero.mainTitleLine2}
@@ -58,7 +58,7 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             {/* Subtext */}
-            <p className="max-w-xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans leading-relaxed mb-8 font-normal">
+            <p className="max-w-xl text-base sm:text-lg text-slate-600 dark:text-white/70 font-sans leading-relaxed mb-4 font-normal">
               I enjoy learning unfamiliar systems, understanding how network packets and databases function beneath the interface, and engineering software people can rely on.
             </p>
 
@@ -123,7 +123,7 @@ export const HeroSection: React.FC = () => {
                   onMouseEnter={() => audioSystem.playHover()}
                   className="p-4 rounded-2xl bg-white/80 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 hover:border-accent-cyan/40 hover:bg-white dark:hover:bg-white/[0.09] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1),0_0_15px_rgba(100,210,255,0.18)] transition-all duration-300 cursor-pointer group/tile"
                 >
-                  <div className="w-7 h-7 rounded-xl bg-accent-blue/15 text-accent-blue flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
+                  <div className="w-9 h-9 aesthetic-icon-badge aesthetic-icon-blue flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
                     <Activity className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] font-sans font-medium text-slate-500 dark:text-white/50 uppercase">PROGRAM</div>
@@ -136,7 +136,7 @@ export const HeroSection: React.FC = () => {
                   onMouseEnter={() => audioSystem.playHover()}
                   className="p-4 rounded-2xl bg-white/80 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 hover:border-accent-crimson/40 hover:bg-white dark:hover:bg-white/[0.09] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1),0_0_15px_rgba(255,69,58,0.18)] transition-all duration-300 cursor-pointer group/tile"
                 >
-                  <div className="w-7 h-7 rounded-xl bg-accent-crimson/15 text-accent-crimson flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
+                  <div className="w-9 h-9 aesthetic-icon-badge aesthetic-icon-crimson flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
                     <Shield className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] font-sans font-medium text-slate-500 dark:text-white/50 uppercase">SECURITY LAB</div>
@@ -149,7 +149,7 @@ export const HeroSection: React.FC = () => {
                   onMouseEnter={() => audioSystem.playHover()}
                   className="p-4 rounded-2xl bg-white/80 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 hover:border-accent-mint/40 hover:bg-white dark:hover:bg-white/[0.09] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1),0_0_15px_rgba(99,230,226,0.18)] transition-all duration-300 cursor-pointer group/tile"
                 >
-                  <div className="w-7 h-7 rounded-xl bg-accent-mint/20 text-teal-600 dark:text-accent-mint flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
+                  <div className="w-9 h-9 aesthetic-icon-badge aesthetic-icon-emerald flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
                     <Terminal className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] font-sans font-medium text-slate-500 dark:text-white/50 uppercase">LANGUAGES</div>
@@ -162,7 +162,7 @@ export const HeroSection: React.FC = () => {
                   onMouseEnter={() => audioSystem.playHover()}
                   className="p-4 rounded-2xl bg-white/80 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 hover:border-accent-amber/40 hover:bg-white dark:hover:bg-white/[0.09] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1),0_0_15px_rgba(255,159,10,0.18)] transition-all duration-300 cursor-pointer group/tile"
                 >
-                  <div className="w-7 h-7 rounded-xl bg-accent-amber/20 text-amber-600 dark:text-accent-amber flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
+                  <div className="w-9 h-9 aesthetic-icon-badge aesthetic-icon-amber flex items-center justify-center mb-2 group-hover/tile:scale-110 transition-transform">
                     <Database className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] font-sans font-medium text-slate-500 dark:text-white/50 uppercase">DATA SYSTEMS</div>
